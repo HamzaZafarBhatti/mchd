@@ -27,8 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $departments = Department::all();
-        View::share('departments', $departments);
+        // $departments = Department::all();
+        // View::share('departments', $departments);
         Schema::defaultStringLength(191);
     }
 }
