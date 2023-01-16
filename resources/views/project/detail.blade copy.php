@@ -480,6 +480,122 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <div class="row">
+                        @foreach($project->tasks as $item)
+                            <div class="col-xxl-3 col-sm-6 project-card">
+                                <div class="card ribbon-box border ribbon-fill shadow-none mb-lg-2 mb-2">
+                                    <div class="card-body">
+                                        @if(\App\Helper\Helper::isNew($item->created_at))
+                                            <div class="ribbon ribbon-danger">New</div>
+                                        @endif
+                                        <div class="p-3 mt-n3 mx-n3 bg-soft-secondary rounded-top">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="mb-0 fs-14 text-center">
+                                                        <a href="{{url('task/detail/'.$item->id)}}" class="text-dark">
+                                                            {{ \Illuminate\Support\Str::limit($item->name, 45, $end='...') }}
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="d-flex gap-1 align-items-center my-n2">
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-link text-muted p-1 mt-n1 py-0 text-decoration-none fs-15"
+                                                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                <i data-feather="more-horizontal" class="icon-sm"></i>
+                                                            </button>
+
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <a class="dropdown-item" href="{{url('task/detail/'.$item->id)}}"><i
+                                                                        class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                                    View</a>
+
+                                                                @if(\App\Helper\Helper::clinicTaskEditable(auth()->user(), $item))
+                                                                    <a class="dropdown-item" href="{{url('task/edit/'.$item->id)}}"><i
+                                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                                        Edit</a>
+                                                                    <div class="dropdown-divider"></div>
+                                                                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#removeProjectModal" onclick="open_modal_delete_bigproject({{$item->id}})"><i
+                                                                            class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                                        Remove</button>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="py-3">
+                                            <div class="row gy-3">
+                                                <div class="col-6">
+                                                    <div>
+                                                        <p class="text-muted mb-1">Status</p>
+                                                        <div class="badge badge-soft-{{\App\Helper\Helper::getStatusColor($item->status)}} fs-12">{{config('constants.project_status')[$item->status]}}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div>
+                                                        <p class="text-muted mb-1">Deadline</p>
+                                                        <h5 class="fs-14">
+                                                            {{$item->end_date ? date('D j M, Y', strtotime($item->end_date)) : "Continue"}}
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex align-items-center mt-3">
+                                                <p class="text-muted mb-0 me-2">Leader :</p>
+                                                <div class="avatar-group">
+                                                    <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"
+                                                       data-bs-trigger="hover" data-bs-placement="top" title="{{$item->leader->name}}">
+                                                        {!! \App\Helper\Helper::avatar($item->leader->avatar, $item->leader->name, 'avatar-xxs', 11, auth() && auth()->user()->id === $item->leader->id) !!}
+                                                    </a>
+                                                </div>
+
+                                                <p class="text-muted ms-auto mb-0 me-2">SubTasks : <span class="badge badge-soft-secondary"> {{$item->subTasks->count()}}</span></p>
+                                            </div>
+
+                                            <div class="d-flex align-items-center mt-3">
+                                                <p class="text-muted mb-0 me-2">Team :</p>
+                                                <div class="avatar-group">
+                                                    @foreach($item->assignUsers as $member)
+                                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"
+                                                           data-bs-trigger="hover" data-bs-placement="top" title="{{$member->name}}">
+                                                            {!! \App\Helper\Helper::avatar($member->avatar, $member->name, 'avatar-xxs', 11, auth() && auth()->user()->id === $member->id) !!}
+                                                        </a>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if(\App\Helper\Helper::progress($item)>=0)
+                                            <div>
+                                                <div class="d-flex mb-2">
+                                                    <div class="flex-grow-1">
+                                                        <div>Progress</div>
+                                                    </div>
+                                                    <div class="flex-shrink-0">
+                                                        <div>{{\App\Helper\Helper::progress($item)}}%</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="progress progress-sm animated-progress">
+                                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{\App\Helper\Helper::progress($item)}}" aria-valuemin="0"
+                                                         aria-valuemax="100" style="width: {{\App\Helper\Helper::progress($item)}}%;">
+                                                    </div><!-- /.progress-bar -->
+                                                </div><!-- /.progress -->
+                                            </div>
+                                        @endif
+                                        <div class="mt-3 d-flex justify-content-end">
+                                            <div class="badge badge-soft-dark">{{$item->department->name}}</div>
+                                        </div>
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                            <!-- end col -->
+                        @endforeach
+                    </div>
                     <table class="table table-striped">
                         <thead>
                             <tr>
