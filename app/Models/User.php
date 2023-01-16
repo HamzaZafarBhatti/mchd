@@ -60,6 +60,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Task::class, 'task_assignees', 'user_id', 'task_id');
     }
 
+    public function kpi_tasks(){
+        return $this->belongsToMany(KpiTask::class, 'kpi_task_assignees', 'user_id', 'task_id');
+    }
+
 
     public function department(){
         return $this->belongsTo(Department::class, 'department_code', 'code');

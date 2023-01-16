@@ -11,40 +11,38 @@
 @section('content')
     @component('components.main_breadcrumb')
         @slot('li_1')
-            KPI Big Project
+            KPI Sub Task
         @endslot
         @slot('title')
-            Edit KPI Big Project
+            Edit KPI Sub Task
         @endslot
     @endcomponent
 
     @include('layouts.errors')
     @include('layouts.flash-message')
 
-    <form id="form" method="post" action="{{url('kpibigproject/edit/'.$big_project->id)}}" enctype="multipart/form-data">
-        <input type="hidden" value="{{$big_project->id}}" name="id">
+    <form id="form" method="post" action="{{url('kpisubtask/edit/'.$sub_task->id)}}" enctype="multipart/form-data">
+        <input type="hidden" value="{{$sub_task->id}}" name="id">
         <div class="row">
             @csrf
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label" for="project-title-input">Big Project Title</label>
-                            <input name="name" type="text" class="form-control" id="project-title-input" value="{{$big_project->name}}" placeholder="Enter big project title">
+                            <label class="form-label" for="project-title-input">Project Title</label>
+                            <input name="name" type="text" class="form-control" id="project-title-input" value="{{$sub_task->name}}" placeholder="Enter project title">
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Big Project Description</label>
-                            <div class="snow-editor" id="ckeditor-classic" style="height: 300px">
-                                {!! $big_project->description !!}
-                            </div>
+                            <label class="form-label">Project Description</label>
+                            <div class="snow-editor" id="ckeditor-classic" style="height: 300px">{!! $sub_task->description !!}</div>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-4">
                                 <div>
                                     <label for="datepicker-start-input" class="form-label">StartDate</label>
-                                    <input name="start_date" value="{{$big_project->start_date}}" type="text" class="form-control" id="datepicker-start-input"
+                                    <input name="start_date" value="{{$sub_task->start_date}}" type="text" class="form-control" id="datepicker-start-input"
                                            placeholder="Enter due date" data-provider="flatpickr">
                                 </div>
                             </div>
@@ -52,7 +50,7 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="datepicker-deadline-input" class="form-label">EndDate</label>
-                                    <input name="end_date" value="{{$big_project->end_date}}" type="text" class="form-control" id="datepicker-deadline-input"
+                                    <input name="end_date" value="{{$sub_task->end_date}}" type="text" class="form-control" id="datepicker-deadline-input"
                                            placeholder="Enter due date" data-provider="flatpickr">
                                 </div>
                             </div>
@@ -62,9 +60,11 @@
                 </div>
                 <!-- end card -->
                 <div class="text-end mb-4">
-                    <a href="{{url('bigproject/detail/'.$big_project->id)}}" class="btn btn-danger w-sm">Back</a>
+                    <a href="javascript:history.back()" class="btn btn-danger w-sm">Back</a>
                     {{--                <button type="submit" class="btn btn-secondary w-sm">Draft</button>--}}
-                    <button type="button" class="btn btn-success w-sm" onclick="edit()">Edit</button>
+                    @if(\App\Helper\Helper::clinicTaskCreatable(auth()->user(), $sub_task))
+                        <button type="button" class="btn btn-success w-sm" onclick="edit()">Edit</button>
+                    @endif
                 </div>
             </div>
             <!-- end col -->
@@ -94,7 +94,7 @@
             var description = myEditor.container.firstChild.innerHTML;
 
             if (big_project_name === ""){
-                notification("Please input big project name.");
+                notification("Please input project name.");
                 return;
             }
 
@@ -114,7 +114,6 @@
                     return;
                 }
             }
-
 
             var html_description = $("<input>")
                 .attr("type", "hidden")

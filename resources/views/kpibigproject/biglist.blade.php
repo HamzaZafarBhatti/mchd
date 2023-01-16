@@ -69,14 +69,14 @@
                                             </button>
 
                                             <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="{{url('bigproject/detail/'.$item->id)}}"><i
+                                                <a class="dropdown-item" href="{{url('kpibigproject/detail/'.$item->id)}}"><i
                                                         class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                     View</a>
 {{--                                                <a class="dropdown-item" href="{{url('bigproject/chart/'.$item->id)}}"><i--}}
 {{--                                                        class="ri-bar-chart-fill align-bottom me-2 text-muted"></i>--}}
 {{--                                                    Chart</a>--}}
                                                 @if(\App\Helper\Helper::clinicBigProjectEditable(auth()->user(), $item))
-                                                <a class="dropdown-item" href="{{url('bigproject/edit/'.$item->id)}}"><i
+                                                <a class="dropdown-item" href="{{url('kpibigproject/edit/'.$item->id)}}"><i
                                                         class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                     Edit</a>
                                                 <div class="dropdown-divider"></div>
@@ -189,7 +189,7 @@
     <!-- removeProjectModal -->
     <div id="removeProjectModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <form id="form_delete_bigproject" method="post" action="{{url('bigproject/delete_bigproject')}}">
+            <form id="form_delete_bigproject" method="post" action="{{url('kpibigproject/delete_bigproject')}}">
                 @csrf
                 <input type="hidden" value="" name="big_project_id">
             </form>

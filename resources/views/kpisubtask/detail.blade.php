@@ -7,7 +7,7 @@
         <div class="col-lg-12">
             <div class="card ribbon-box ribbon-fill right mt-n4 mx-n4">
                  <span class="ribbon-three ribbon-three-danger">
-                                        <span>KPI Project</span>
+                                        <span>KPI Sub Task</span>
                                     </span>
                 <div class="bg-soft-secondary">
                     <div class="card-body pb-0 px-4">
@@ -15,23 +15,23 @@
                             <div class="col-md">
                                 <div class="row align-items-center g-3">
                                     <div class="col-md-auto">
-                                        {!! \App\Helper\Helper::avatar($project->user->avatar, $project->user->name, 'avatar-md', 30, auth() && auth()->user()->id === $project->user->id) !!}
+                                        {!! \App\Helper\Helper::avatar($sub_task->leader->avatar, $sub_task->leader->name, 'avatar-md', 30, auth() && auth()->user()->id === $sub_task->leader->id) !!}
                                     </div>
                                     <div class="col-md">
                                         <div>
-                                            <h4 class="fw-bold">{{$project->name}}</h4>
+                                            <h4 class="fw-bold">{{$sub_task->name}}</h4>
                                             <div class="hstack gap-3 flex-wrap">
-                                                <div>Department : <span class="fw-medium">{{$project->department->name}}</span></div>
+                                                <div>Department : <span class="fw-medium">{{$sub_task->department->name}}</span></div>
                                                 <div class="vr"></div>
-                                                <div>Leader : <span class="fw-medium">{{$project->user->name}}</span></div>
+                                                <div>Leader : <span class="fw-medium">{{$sub_task->leader->name}}</span></div>
                                                 <div class="vr"></div>
-                                                <div>Create Date : <span class="fw-medium">{{\App\Helper\Helper::letter_date($project->created_at)}}</span></div>
+                                                <div>Create Date : <span class="fw-medium">{{\App\Helper\Helper::letter_date($sub_task->created_at)}}</span></div>
                                                 <div class="vr"></div>
-                                                <div>Start Date : <span class="fw-medium">{{\App\Helper\Helper::letter_date($project->start_date)}}</span></div>
+                                                <div>Start Date : <span class="fw-medium">{{\App\Helper\Helper::letter_date($sub_task->start_date)}}</span></div>
                                                 <div class="vr"></div>
-                                                <div>Due Date : <span class="fw-medium">{{\App\Helper\Helper::letter_date($project->end_date)}}</span></div>
+                                                <div>Due Date : <span class="fw-medium">{{\App\Helper\Helper::letter_date($sub_task->end_date)}}</span></div>
                                                 <div class="vr"></div>
-                                                @if(\App\Helper\Helper::isNew($project->created_at))
+                                                @if(\App\Helper\Helper::isNew($sub_task->created_at))
                                                     <div class="badge rounded-pill bg-info fs-12">New</div>
                                                 @endif
 {{--                                                <div class="badge rounded-pill bg-danger fs-12">High</div>--}}
@@ -79,45 +79,44 @@
                                     <div class="text-muted">
                                         <h6 class="mb-3 fw-semibold text-uppercase">Description</h6>
                                         <div class="ql-editor">
-                                            {!! $project->description !!}
+                                            {!! $sub_task->description !!}
                                         </div>
-
-
                                         <div class="pt-3 border-top border-top-dashed mt-4">
                                             <div class="row">
 
                                                 <div class="col-lg-3 col-sm-6">
                                                     <div>
                                                         <p class="mb-2 text-uppercase fw-medium">Start Date :</p>
-                                                        <h5 class="fs-15 mb-0">{{\App\Helper\Helper::letter_date($project->start_date)}}</h5>
+                                                        <h5 class="fs-15 mb-0">{{\App\Helper\Helper::letter_date($sub_task->start_date)}}</h5>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-3 col-sm-6">
                                                     <div>
                                                         <p class="mb-2 text-uppercase fw-medium">Due Date :</p>
-                                                        <h5 class="fs-15 mb-0">{{\App\Helper\Helper::letter_date($project->end_date)}}</h5>
+                                                        <h5 class="fs-15 mb-0">{{\App\Helper\Helper::letter_date($sub_task->end_date)}}</h5>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-3 col-sm-6 mb-3">
                                                     <div>
                                                         <p class="mb-2 text-uppercase fw-medium">Status :</p>
-                                                        <div class="badge bg-{{\App\Helper\Helper::getStatusColor($project->status)}} fs-12">{{\App\Helper\Helper::getStatus(0, $project->status)}}</div>
+                                                        <div class="badge bg-{{\App\Helper\Helper::getStatusColor($sub_task->status)}} fs-12">{{\App\Helper\Helper::getStatus(0, $sub_task->status)}}</div>
                                                     </div>
                                                 </div>
 
+
                                                 <div class="col-lg-3 col-sm-6">
-                                                    @if(\App\Helper\Helper::statusChangeable(auth()->user(), $project))
+                                                    @if(\App\Helper\Helper::statusChangeable(auth()->user(), $sub_task))
                                                         <p class="mb-2 text-uppercase fw-medium">Change Status :</p>
                                                         <div class="mb-4">
                                                             <form id="form_status" method="post" action="{{url('clinic/change_status')}}">
                                                                 @csrf
                                                                 <input type="hidden" name="type" value="1">
-                                                                <input type="hidden" name="id" value="{{$project->id}}">
+                                                                <input type="hidden" name="id" value="{{$sub_task->id}}">
                                                                 <select id="change_status" class="form-control" name="status" data-choices data-choices-search-false>
                                                                     @foreach(config('constants.big_project_status') as $key => $val)
                                                                         @if($key !== "all")
-                                                                            <option {{$project->status == $key? 'selected' : ''}} value="{{$key}}">{{$val}}</option>
+                                                                            <option {{$sub_task->status == $key? 'selected' : ''}} value="{{$key}}">{{$val}}</option>
                                                                         @endif
                                                                     @endforeach
                                                                 </select>
@@ -128,14 +127,13 @@
 
                                             </div>
                                             <div class="pt-3 border-top border-top-dashed mt-4 d-flex justify-content-end">
-                                                <a href="{{url('kpibigproject/detail/'.$project->big_project->id)}}" class="btn btn-outline-danger w-sm me-1">Back</a>
-                                                @if(\App\Helper\Helper::clinicProjectEditable(auth()->user(), $project))
-                                                    <a href="{{url('kpiproject/edit/'.$project->id)}}" class="btn btn-outline-success">Edit</a>
+                                                <a href="{{url('task/detail/'.$sub_task->task->id)}}" class="btn btn-outline-danger w-sm me-1">Back</a>
+                                                @if(\App\Helper\Helper::clinicSubTaskEditable(auth()->user(), $sub_task))
+                                                    <a href="{{url('kpisubtask/edit/'.$sub_task->id)}}" class="btn btn-outline-success">Edit</a>
                                                 @endif
+
                                             </div>
                                         </div>
-
-
                                     </div>
                                 </div>
                                 <!-- end card body -->
@@ -146,17 +144,17 @@
                         <div class="col-xl-3 col-lg-4">
                             <div class="card">
                                 <div class="card-header align-items-center border-bottom-dashed">
-                                    <h4 class="card-title mb-0 text-center">{{$project->department->name}}</h4>
+                                    <h4 class="card-title mb-0 text-center">{{$sub_task->department->name}}</h4>
                                 </div>
                                 <div class="card-header align-items-center d-flex justify-content-between border-bottom-dashed">
                                     <h4 class="card-title mb-0">Leader</h4>
                                     <div class="float-lg-end">
-                                        {!! \App\Helper\Helper::avatar($project->user->avatar, $project->user->name, 'avatar-xs', 11, auth() && auth()->user()->id === $project->user->id) !!}
+                                        {!! \App\Helper\Helper::avatar($sub_task->leader->avatar, $sub_task->leader->name, 'avatar-xs', 11, auth() && auth()->user()->id === $sub_task->leader->id) !!}
                                     </div>
                                 </div>
                                 <div class="card-header align-items-center d-flex border-bottom-dashed">
                                     <h4 class="card-title mb-0 flex-grow-1">Members</h4>
-                                    @if(\App\Helper\Helper::clinicProjectEditable(auth()->user(), $project))
+                                    @if(\App\Helper\Helper::clinicSubTaskEditable(auth()->user(), $sub_task))
                                     <div class="flex-shrink-0">
                                         <button data-bs-toggle="modal" data-bs-target="#inviteMembersModal" onclick="open_invite_modal()" type="button" class="btn btn-soft-danger btn-sm"><i
                                                 class="ri-share-line me-1 align-bottom"></i> Invite Leader</button>
@@ -167,7 +165,7 @@
                                 <div class="card-body">
                                     <div data-simplebar style="height: 235px;" class="mx-n3 px-3">
                                         <div class="vstack gap-3">
-                                            @foreach($project->assignUsers as $item)
+                                            @foreach($sub_task->assignUsers as $item)
                                                 <div class="d-flex align-items-center">
                                                     <div class="avatar-xs flex-shrink-0 me-3">
                                                         {!! \App\Helper\Helper::avatar($item->avatar, $item->name, 'avatar-xs', 11, auth() && auth()->user()->id === $item->id) !!}
@@ -175,7 +173,8 @@
                                                     <div class="flex-grow-1">
                                                         <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block">{{$item->name}}</a></h5>
                                                     </div>
-                                                    @if(\App\Helper\Helper::clinicProjectEditable(auth()->user(), $project))
+
+                                                    @if(\App\Helper\Helper::clinicSubTaskEditable(auth()->user(), $sub_task))
                                                     <div class="flex-shrink-0">
                                                         <div class="d-flex align-items-center gap-1">
 {{--                                                            <button type="button" class="btn btn-light btn-sm">Message</button>--}}
@@ -215,7 +214,7 @@
                             <div class="card">
                                 <div class="card-header align-items-center d-flex border-bottom-dashed">
                                     <h4 class="card-title mb-0 flex-grow-1">Attachments</h4>
-                                    @if(\App\Helper\Helper::clinicProjectEditable(auth()->user(), $project))
+                                    @if(\App\Helper\Helper::clinicSubTaskEditable(auth()->user(), $sub_task))
                                     <div class="flex-shrink-0">
                                         <button data-bs-toggle="modal" data-bs-target="#modal_uplaod" onclick="open_modal_uplaod()" type="button" class="btn btn-soft-info btn-sm"><i
                                                 class="ri-upload-2-fill me-1 align-bottom"></i> Upload</button>
@@ -224,7 +223,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="vstack gap-2">
-                                        @foreach($project->attachments as $item)
+                                        @foreach($sub_task->attachments as $item)
                                             <div class="border rounded border-dashed p-2">
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-shrink-0 me-3">
@@ -245,14 +244,13 @@
                                                                     class="btn btn-icon text-muted btn-sm fs-18"><i
                                                                     class="ri-download-2-line"></i>
                                                             </a>
-                                                            @if(\App\Helper\Helper::clinicProjectEditable(auth()->user(), $project))
+                                                            @if(\App\Helper\Helper::clinicSubTaskEditable(auth()->user(), $sub_task))
                                                             <div class="dropdown">
                                                                 <button class="btn btn-icon text-muted btn-sm fs-18 dropdown"
                                                                         type="button" data-bs-toggle="dropdown"
                                                                         aria-expanded="false">
                                                                     <i class="ri-more-fill"></i>
                                                                 </button>
-
                                                                 <ul class="dropdown-menu">
 {{--                                                                    <li><a class="dropdown-item" href="#"><i--}}
 {{--                                                                                class="ri-pencil-fill align-bottom me-2 text-muted"></i>--}}
@@ -460,121 +458,6 @@
         </div>
         <!-- end col -->
 
-
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header bg-soft-primary">
-                    <div class="d-flex align-items-center flex-wrap gap-2">
-                        <div class="flex-grow-1">
-                            <div class="hstack text-nowrap gap-2">
-                                Tasks <span class="badge badge-danger badge-soft-secondary">{{count($project->tasks)}}</span>
-                            </div>
-                        </div>
-
-                        @if(\App\Helper\Helper::clinicTaskCreatable(auth()->user(), $project))
-                        <div class="flex-shrink-0">
-                            <a href="{{url('kpitask/create/'.$project->id)}}" class="btn btn-info add-btn">
-                                <i class="ri-add-fill me-1 align-bottom"></i> Create Task</a>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Task</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Leader</th>
-                                <th scope="col">Members</th>
-                                <th scope="col">Sub Tasks</th>
-                                <th scope="col">Progress</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($project->tasks as $item)
-                            <tr>
-                                <th scope="row">
-                                    <a href="{{url('kpitask/detail/'.$item->id)}}" class="text-dark">
-                                        {{ \Illuminate\Support\Str::limit($item->name, 45, $end='...') }}
-                                    </a>
-                                </th>
-                                <td>
-                                    <div class="badge badge-soft-{{\App\Helper\Helper::getStatusColor($item->status)}} fs-12">{{config('constants.project_status')[$item->status]}}</div>
-                                </td>
-                                <td>
-                                    <div class="avatar-group">
-                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"
-                                           data-bs-trigger="hover" data-bs-placement="top" title="{{$item->leader->name}}">
-                                            {!! \App\Helper\Helper::avatar($item->leader->avatar, $item->leader->name, 'avatar-xxs', 11, auth() && auth()->user()->id === $item->leader->id) !!}
-                                        </a>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="avatar-group">
-                                        @foreach($item->assignUsers as $member)
-                                            <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"
-                                               data-bs-trigger="hover" data-bs-placement="top" title="{{$member->name}}">
-                                                {!! \App\Helper\Helper::avatar($member->avatar, $member->name, 'avatar-xxs', 11, auth() && auth()->user()->id === $member->id) !!}
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="badge badge-soft-secondary"> {{$item->subTasks->count()}}</span>
-                                </td>
-                                <td>
-                                    @if(\App\Helper\Helper::progress($item)>=0)
-                                        <div>
-                                            <div class="d-flex mb-2">
-                                                {{-- <div class="flex-grow-1">
-                                                    <div>Progress</div>
-                                                </div> --}}
-                                                <div class="flex-shrink-0">
-                                                    <div>{{\App\Helper\Helper::progress($item)}}%</div>
-                                                </div>
-                                            </div>
-
-                                            <div class="progress progress-sm animated-progress">
-                                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{\App\Helper\Helper::progress($item)}}" aria-valuemin="0"
-                                                    aria-valuemax="100" style="width: {{\App\Helper\Helper::progress($item)}}%;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link text-muted p-1 mt-n1 py-0 text-decoration-none fs-15"
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            <i data-feather="more-horizontal" class="icon-sm"></i>
-                                        </button>
-
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item" href="{{url('kpitask/detail/'.$item->id)}}"><i
-                                                    class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                View</a>
-
-                                            @if(\App\Helper\Helper::clinicTaskEditable(auth()->user(), $item))
-                                                <a class="dropdown-item" href="{{url('kpitask/edit/'.$item->id)}}"><i
-                                                        class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                    Edit</a>
-                                                <div class="dropdown-divider"></div>
-                                                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#removeProjectModal" onclick="open_modal_delete_bigproject({{$item->id}})"><i
-                                                        class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                    Remove</button>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
     </div>
     <!-- end row -->
     <!-- Modal -->
@@ -587,8 +470,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form id="form" method="post" action="{{url('kpiproject/invite/'.$project->id)}}">
-                        <input name="id" type="hidden" value="{{$project->id}}">
+                    <form id="form" method="post" action="{{url('kpisubtask/invite/'.$sub_task->id)}}">
+                        <input name="id" type="hidden" value="{{$sub_task->id}}">
                         @csrf
                     </form>
                     <div class="search-box mb-3">
@@ -649,10 +532,10 @@
                     </div>
                     <div class="hstack gap-2 justify-content-center mt-3">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-                        <form method="post" action="{{url('kpiproject/delete_member/'.$project->id)}}">
+                        <form method="post" action="{{url('kpisubtask/delete_member/'.$sub_task->id)}}">
                             {{csrf_field()}}
                             <input type="hidden" name="member_id" value="">
-                            <input type="hidden" name="project_id" value="{{$project->id}}">
+                            <input type="hidden" name="sub_task_id" value="{{$sub_task->id}}">
                             <button type="submit" href="javascript:void(0);" class="btn btn-danger">Yes, Delete It!</button>
                         </form>
                     </div>
@@ -678,11 +561,11 @@
                     </div>
                     <div class="hstack gap-2 justify-content-center mt-3">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-                        <form method="post" action="{{url('kpiproject/delete_attachment/'.$project->id)}}">
+                        <form method="post" action="{{url('kpisubtask/delete_attachment/'.$sub_task->id)}}">
                             {{csrf_field()}}
                             <input type="hidden" name="attachment_id" value="">
                             <input type="hidden" name="path_name" value="">
-                            <input type="hidden" name="project_id" value="{{$project->id}}">
+                            <input type="hidden" name="sub_task_id" value="{{$sub_task->id}}">
                             <button type="submit" href="javascript:void(0);" class="btn btn-danger">Yes, Delete It!</button>
                         </form>
                     </div>
@@ -700,9 +583,9 @@
                     <h5 class="modal-title" id="inviteMembersModalLabel">Upload</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="form" method="post" action="{{url('kpiproject/upload_file/'.$project->id)}}" enctype="multipart/form-data">
+                <form id="form" method="post" action="{{url('kpisubtask/upload_file/'.$sub_task->id)}}" enctype="multipart/form-data">
                     <div class="modal-body p-4">
-                            <input name="id" type="hidden" value="{{$project->id}}">
+                            <input name="id" type="hidden" value="{{$sub_task->id}}">
                             @csrf
                             <div class="mb-3">
                                 <input type="file" class="form-control" name="files[]" multiple>
@@ -721,37 +604,6 @@
     </div>
     <!-- end modal -->
 
-    <!-- removeProjectModal -->
-    <div id="removeProjectModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <form id="form_delete_project" method="post" action="{{url('kpitask/delete_project')}}">
-                @csrf
-                <input type="hidden" value="" name="task_id">
-            </form>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            id="close-modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mt-2 text-center">
-                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                                   colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                            <h4>Are you Sure ?</h4>
-                            <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Task ?</p>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn w-sm btn-danger" id="remove-project">Yes, Delete It!</button>
-                    </div>
-                </div>
-
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
 @endsection
 @section('script')
     <script src="{{ URL::asset('assets/js/pages/project-overview.init.js') }}"></script>
@@ -762,7 +614,7 @@
 @section('script-bottom')
     <script>
         let candidate_user_list = @json($members);
-        let user_list = @json($project->assignUsers);
+        let user_list = @json($sub_task->assignUsers);
         { // invite leader
             function add_user(obj, i){
                 var user = candidate_user_list[i];
@@ -871,7 +723,6 @@
             }
 
 
-
             function open_invite_modal(){
                 update_modal(user_list);
                 $('#inviteMembersModal').modal('show');
@@ -916,6 +767,7 @@
                 modal_uplaod.modal("show");
             }
         }
+
         {// search
             $("#member_search").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
@@ -930,23 +782,10 @@
             });
         }
 
-        {// remove task
-            function open_modal_delete_bigproject(id){
-                $('input[name="task_id"]').val(id);
-                $('#removeProjectModal').modal('show');
-            }
-
-            $('#remove-project').click(function () {
-                $('#form_delete_project').submit();
-            });
-        }
-
-
         {// change status
             $('#change_status').change(function () {
                 $('#form_status').submit();
             });
         }
-
     </script>
 @endsection

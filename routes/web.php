@@ -5,6 +5,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KpiBigProjectController;
 use App\Http\Controllers\KpiProjectController;
 use App\Http\Controllers\KpiSettingController;
+use App\Http\Controllers\KpiSubTaskController;
+use App\Http\Controllers\KpiTaskController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OtherDepartmentController;
 use App\Http\Controllers\OtherSubDepartmentController;
@@ -103,7 +105,6 @@ Route::middleware('auth')->group(function (){
         // Sub Tasks
         Route::get('/sublist', [SubTaskController::class, 'sublist'])->name('sublist');
         Route::get('/subcreate', [SubTaskController::class, 'subcreate'])->name('subcreate');
-
         Route::get('/subtask/create/{task_id}', [SubTaskController::class, 'sub_task_create'])->name('sub_task_create');
         Route::post('/subtask/create/{task_id}', [SubTaskController::class, 'p_sub_task_create'])->name('p_sub_task_create');
         Route::get('/subtask/detail/{sub_task_id}', [SubTaskController::class, 'sub_task_detail'])->name('sub_task_detail');
@@ -146,6 +147,34 @@ Route::middleware('auth')->group(function (){
         Route::post('/kpiproject/delete_project', [KpiProjectController::class, 'delete_project_v2'])->name('delete_kpiproject_v2');
         Route::post('/kpiproject/upload_file/{project_id}', [KpiProjectController::class, 'project_upload_file'])->name('kpiproject_upload_file');
         Route::post('/kpiproject/delete_attachment/{project_id}', [KpiProjectController::class, 'kpiproject_delete_attachment']);
+
+        // Kpi Tasks
+        Route::get('/kpitasklist', [KpiTaskController::class, 'tasklist'])->name('kpitasklist');
+        Route::get('/kpitaskcreate', [KpiTaskController::class, 'taskcreate'])->name('kpitaskcreate');
+        Route::get('/kpitask/create/{project_id}', [KpiTaskController::class, 'task_create'])->name('kpitask_create');
+        Route::post('/kpitask/create/{project_id}', [KpiTaskController::class, 'p_task_create'])->name('p_kpitask_create');
+        Route::get('/kpitask/detail/{task_id}', [KpiTaskController::class, 'task_detail'])->name('kpitask_detail');
+        Route::get('/kpitask/edit/{task_id}', [KpiTaskController::class, 'task_edit'])->name('kpitask_edit');
+        Route::post('/kpitask/edit/{task_id}', [KpiTaskController::class, 'p_task_edit'])->name('p_kpitask_edit');
+        Route::post('/kpitask/delete_member/{task_id}', [KpiTaskController::class, 'task_delete_member'])->name('kpitask_delete_member');
+        Route::post('/kpitask/invite/{task_id}', [KpiTaskController::class, 'task_member_invite'])->name('kpitask_member_invite');
+        Route::post('/kpitask/delete_project', [KpiTaskController::class, 'task_delete_project'])->name('kpitask_delete_project');
+        Route::post('/kpitask/upload_file/{task_id}', [KpiTaskController::class, 'task_upload_file'])->name('kpitask_upload_file');
+        Route::post('/kpitask/delete_attachment/{task_id}', [KpiTaskController::class, 'task_delete_attachment'])->name('kpitask_delete_attachment');
+
+        // Sub Tasks
+        Route::get('/kpisublist', [KpiSubTaskController::class, 'sublist'])->name('kpisublist');
+        Route::get('/kpisubcreate', [KpiSubTaskController::class, 'subcreate'])->name('kpisubcreate');
+        Route::get('/kpisubtask/create/{task_id}', [KpiSubTaskController::class, 'sub_task_create'])->name('kpisub_task_create');
+        Route::post('/kpisubtask/create/{task_id}', [KpiSubTaskController::class, 'p_sub_task_create'])->name('p_kpisub_task_create');
+        Route::get('/kpisubtask/detail/{sub_task_id}', [KpiSubTaskController::class, 'sub_task_detail'])->name('kpisub_task_detail');
+        Route::get('/kpisubtask/edit/{sub_task_id}', [KpiSubTaskController::class, 'sub_task_edit'])->name('kpisub_task_edit');
+        Route::post('/kpisubtask/edit/{sub_task_id}', [KpiSubTaskController::class, 'p_sub_task_edit'])->name('p_kpisub_task_edit');
+        Route::post('/kpisubtask/delete_member/{sub_task_id}', [KpiSubTaskController::class, 'sub_task_delete_member'])->name('kpisub_task_delete_member');
+        Route::post('/kpisubtask/invite/{sub_task_id}', [KpiSubTaskController::class, 'sub_task_member_invite'])->name('kpisub_task_member_invite');
+        Route::post('/kpisubtask/delete_project', [KpiSubTaskController::class, 'sub_task_delete_project'])->name('kpisub_task_delete_project');
+        Route::post('/kpisubtask/upload_file/{task_id}', [KpiSubTaskController::class, 'sub_task_upload_file'])->name('kpisub_task_upload_file');
+        Route::post('/kpisubtask/delete_attachment/{task_id}', [KpiSubTaskController::class, 'sub_task_delete_attachment'])->name('kpisub_task_delete_attachment');
 
 
 

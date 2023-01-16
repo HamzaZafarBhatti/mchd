@@ -11,6 +11,7 @@ return [
         'failed' => 'Invalid Credentials'
     ],
     'create_task' => "Create Task",
+    'create_kpi_task' => "Create KPI Task",
     'create_project' => "Create Project",
     'create_kpi_project' => "Create KPI Project",
     'big_project_list' => "Big Project List",

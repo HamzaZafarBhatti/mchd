@@ -36,7 +36,7 @@ class KpiProject extends Model
     }
 
     public function tasks(){
-        return $this->hasMany(Task::class, 'project_id', 'id')
+        return $this->hasMany(KpiTask::class, 'project_id', 'id')
             ->select(["*", DB::raw( 'DATEDIFF(end_date, start_date) as period')])->orderBy('id', 'desc');
     }
 
