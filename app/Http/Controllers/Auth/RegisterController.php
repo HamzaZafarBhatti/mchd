@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Models\Project;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
@@ -55,7 +56,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+(?:\s[a-zA-Z]+)+$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-//            'avatar' => ['image' ,'mimes:jpg,jpeg,png','max:1024'],
+            //            'avatar' => ['image' ,'mimes:jpg,jpeg,png','max:1024'],
             'department_code' => ['required'],
         ], [
             'required' => 'The :attribute field is required.',
@@ -86,13 +87,20 @@ class RegisterController extends Controller
             $avatar->move($avatarPath, $avatarName);
         }
 
-        return User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'avatar' => "user_default.jpg",
             'department_code' => $data['department_code'],
         ]);
-    }
 
+        if ($user) {
+            Notification::create([
+                'message' => 'A new user "' . $user->name . '" Registered to "' . $user->department->name . '" Department',
+            ]);
+        }
+
+        return $user;
+    }
 }
