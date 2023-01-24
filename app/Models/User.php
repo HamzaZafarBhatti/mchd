@@ -82,4 +82,9 @@ class User extends Authenticatable
         return $this->hasMany(AssignedKpi::class, "user_id", "id");
     }
 
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class, NotificationUser::class);
+    }
+
 }

@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\Department;
 use App\Models\Notification;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -30,11 +32,14 @@ class AppServiceProvider extends ServiceProvider
     {
         $departments = Department::all();
         View::share('departments', $departments);
-        $notifications = array();
-        if(Schema::hasTable('notifications')) {
-            $notifications = Notification::where('is_read', 0)->latest()->take(5)->get();
-        }
-        View::share('notifications', $notifications);
+        View::composer('*', function ($view) {
+            $notifications = array();
+            if (Auth::check()) {
+                $user = User::find(Auth::user()->id);
+                $notifications = $user->notifications()->wherePivot('is_read', 0)->orderBy('id', 'desc')->take(5)->get();
+            }
+            $view->with('notifications', $notifications);
+        });
         Schema::defaultStringLength(191);
     }
 }

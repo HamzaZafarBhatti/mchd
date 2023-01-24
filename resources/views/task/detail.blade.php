@@ -156,7 +156,7 @@
                                     @if(\App\Helper\Helper::clinicTaskEditable(auth()->user(), $task))
                                     <div class="flex-shrink-0">
                                         <button data-bs-toggle="modal" data-bs-target="#inviteMembersModal" onclick="open_invite_modal()" type="button" class="btn btn-soft-danger btn-sm"><i
-                                                class="ri-share-line me-1 align-bottom"></i> Invite Leader</button>
+                                                class="ri-share-line me-1 align-bottom"></i> Invite Member</button>
                                     </div>
                                     @endif
                                 </div>
@@ -639,7 +639,7 @@
                     <div class="mt-0">
                         <div class="fs-15 mx-5">
                             <h4 class="mb-3">Are you sure ?</h4>
-                            <p class="text-muted mx-4 mb-0">Are you Sure You want to Delete this leader ?</p>
+                            <p class="text-muted mx-4 mb-0">Are you Sure You want to Delete this Member ?</p>
                         </div>
                     </div>
                     <div class="hstack gap-2 justify-content-center mt-3">

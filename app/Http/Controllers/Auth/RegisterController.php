@@ -96,9 +96,11 @@ class RegisterController extends Controller
         ]);
 
         if ($user) {
-            Notification::create([
+            $notification = Notification::create([
                 'message' => 'A new user "' . $user->name . '" Registered to "' . $user->department->name . '" Department',
             ]);
+            $admin = User::where('role', 2)->first();
+            $admin->notifications()->attach($notification->id);
         }
 
         return $user;
