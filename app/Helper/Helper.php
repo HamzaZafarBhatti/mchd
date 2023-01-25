@@ -102,6 +102,19 @@ class Helper
         return 200;
     }
 
+    public static function kpiprogress($item){
+
+        if ($item->status === "completed"){
+            return 100;
+        }else if($item->status === 'cancelled'){
+           return 0;
+        }else if($item->status === 'notyetstarted'){
+            return 0;
+        }
+
+        return 0;
+    }
+
     public static function isNew($created_at){
         $today = date("Y-m-d");
         $diff = abs(strtotime($today) - strtotime($created_at));

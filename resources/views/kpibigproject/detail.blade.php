@@ -682,20 +682,20 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @if(\App\Helper\Helper::progress($item)>=0)
+                                        @if(\App\Helper\Helper::kpiprogress($item)>=0)
                                             <div>
                                                 <div class="d-flex mb-2">
                                                     <div class="flex-grow-1">
                                                         <div>Progress</div>
                                                     </div>
                                                     <div class="flex-shrink-0">
-                                                        <div>{{\App\Helper\Helper::progress($item)}}%</div>
+                                                        <div>{{\App\Helper\Helper::kpiprogress($item)}}%</div>
                                                     </div>
                                                 </div>
 
                                                 <div class="progress progress-sm animated-progress">
-                                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{\App\Helper\Helper::progress($item)}}" aria-valuemin="0"
-                                                         aria-valuemax="100" style="width: {{\App\Helper\Helper::progress($item)}}%;">
+                                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{\App\Helper\Helper::kpiprogress($item)}}" aria-valuemin="0"
+                                                         aria-valuemax="100" style="width: {{\App\Helper\Helper::kpiprogress($item)}}%;">
                                                     </div><!-- /.progress-bar -->
                                                 </div><!-- /.progress -->
                                             </div>

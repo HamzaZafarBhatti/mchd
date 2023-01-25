@@ -6,6 +6,8 @@ use App\Models\KpiBigAttachment;
 use App\Models\KpiBigProject;
 use App\Models\KpiBigProjectAssignee;
 use App\Models\KpiProject;
+use App\Models\KpiSubTask;
+use App\Models\KpiTask;
 use App\Models\Project;
 use App\Models\User;
 use Carbon\Carbon;
@@ -370,11 +372,11 @@ class KpiBigProjectController extends Controller
         if ($type == 0) { // big project
             $model = KpiBigProject::findOrFail($id);
         } else if ($type == 1) { // project
-            $model = Project::findOrFail($id);
+            $model = KpiProject::findOrFail($id);
         } else if ($type == 2) { // task
-            $model = Task::findOrFail($id);
+            $model = KpiTask::findOrFail($id);
         } else
-            $model = SubTask::findOrFail($id);
+            $model = KpiSubTask::findOrFail($id);
 
         $model->status = $status;
         $model->save();
