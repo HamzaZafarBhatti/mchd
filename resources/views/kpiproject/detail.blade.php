@@ -442,7 +442,20 @@
                                     </td>
                                     <td>
                                         <div class="avatar-group">
-                                            <a href="javascript: void(0);" class="avatar-group-item"
+                                            @foreach ($item->assignLeaders as $member)
+                                                <a href="javascript: void(0);" class="avatar-group-item"
+                                                    data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                    data-bs-placement="top" title="{{ $member->name }}">
+                                                    {!! \App\Helper\Helper::avatar(
+                                                        $member->avatar,
+                                                        $member->name,
+                                                        'avatar-xxs',
+                                                        11,
+                                                        auth() && auth()->user()->id === $member->id,
+                                                    ) !!}
+                                                </a>
+                                            @endforeach
+                                            {{-- <a href="javascript: void(0);" class="avatar-group-item"
                                                 data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
                                                 title="{{ $item->leader->name }}">
                                                 {!! \App\Helper\Helper::avatar(
@@ -452,7 +465,7 @@
                                                     11,
                                                     auth() && auth()->user()->id === $item->leader->id,
                                                 ) !!}
-                                            </a>
+                                            </a> --}}
                                         </div>
                                     </td>
                                     <td>

@@ -778,7 +778,20 @@
                                             <div class="d-flex align-items-center mt-3">
                                                 <p class="text-muted mb-0 me-2">Leader :</p>
                                                 <div class="avatar-group">
-                                                    <a href="javascript: void(0);" class="avatar-group-item"
+                                                    @foreach ($item->assignLeaders as $member)
+                                                        <a href="javascript: void(0);" class="avatar-group-item"
+                                                            data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                            data-bs-placement="top" title="{{ $member->name }}">
+                                                            {!! \App\Helper\Helper::avatar(
+                                                                $member->avatar,
+                                                                $member->name,
+                                                                'avatar-xxs',
+                                                                11,
+                                                                auth() && auth()->user()->id === $member->id,
+                                                            ) !!}
+                                                        </a>
+                                                    @endforeach
+                                                    {{-- <a href="javascript: void(0);" class="avatar-group-item"
                                                         data-bs-toggle="tooltip" data-bs-trigger="hover"
                                                         data-bs-placement="top" title="{{ $item->user->name }}">
                                                         {!! \App\Helper\Helper::avatar(
@@ -788,7 +801,7 @@
                                                             11,
                                                             auth() && auth()->user()->id === $item->user->id,
                                                         ) !!}
-                                                    </a>
+                                                    </a> --}}
                                                 </div>
 
                                                 <p class="text-muted ms-auto mb-0 me-2">Tasks : <span

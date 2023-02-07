@@ -112,10 +112,16 @@
                             <div class="d-flex align-items-center mt-3">
                                 <p class="text-muted mb-0 me-2">Manager :</p>
                                 <div class="avatar-group">
-                                    <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"
+                                    @foreach($item->assignManagers as $leader)
+                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"
+                                           data-bs-trigger="hover" data-bs-placement="top" title="{{$leader->name}}">
+                                            {!! \App\Helper\Helper::avatar($leader->avatar, $leader->name, 'avatar-xxs', 11, auth() && auth()->user()->id === $leader->id) !!}
+                                        </a>
+                                    @endforeach
+                                    {{-- <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"
                                        data-bs-trigger="hover" data-bs-placement="top" title="{{$item->boss->name}}">
                                         {!! \App\Helper\Helper::avatar($item->boss->avatar, $item->boss->name, 'avatar-xxs', 11, auth() && auth()->user()->id === $item->boss->id) !!}
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </div>
 
