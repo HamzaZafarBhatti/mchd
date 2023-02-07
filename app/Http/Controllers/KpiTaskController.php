@@ -6,6 +6,8 @@ use App\Models\KpiProject;
 use App\Models\KpiTask;
 use App\Models\KpiTaskAssignee;
 use App\Models\KpiTaskAttachment;
+use App\Models\KpiTaskLeader;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use File;
@@ -76,6 +78,12 @@ class KpiTaskController extends Controller
             'status_change_date' => Carbon::now(),
         ]);
 
+        KpiTaskLeader::create([
+            'task_id' => $task->id,
+            'project_id' => $project_id,
+            'leader_id' => $leader_id
+        ]);
+
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $attach_origin_name = $file->getClientOriginalName();
@@ -107,7 +115,8 @@ class KpiTaskController extends Controller
     {
         $task = KpiTask::findOrFail($task_id);
         $members = $task->project->assignUsers;
-        return view('kpitask.detail', compact('task', 'members'));
+        $leaders = User::members(auth()->user()->department_code);
+        return view('kpitask.detail', compact('task', 'members', 'leaders'));
     }
 
 
@@ -138,6 +147,18 @@ class KpiTaskController extends Controller
         //end-
         return redirect()->back()->with('success', 'Deleted successfully.');
     }
+    public function task_delete_leader(Request $request)
+    {
+        $leader_id = $request->leader_id;
+        $task_id = $request->task_id;
+        $taskLeaderObj = KpiTaskLeader::where('task_id', $task_id);
+        $manager_count = $taskLeaderObj->count();
+        if ($manager_count > 1) {
+            $taskLeaderObj->where('leader_id', $leader_id)->delete();
+            return redirect()->back()->with('success', 'Deleted successfully.');
+        }
+        return redirect()->back()->with('warning', 'Please assign another leader first.');
+    }
 
     public function task_member_invite(Request $request)
     {
@@ -148,6 +169,19 @@ class KpiTaskController extends Controller
             KpiTaskAssignee::where('task_id', $task_id)->delete();
             foreach ($assignedTo as $user_id) {
                 KpiTaskAssignee::create(['task_id' => $task_id, 'project_id' => $task->project->id, 'user_id' => $user_id]);
+            }
+        }
+        return redirect()->back()->with('success', "Invited Successfully.");
+    }
+    public function task_leader_invite(Request $request)
+    {
+        $task_id = $request->id;
+        $assignedTo = $request->assignedTo;
+        $task = KpiTask::findOrFail($task_id);
+        if ($assignedTo) {
+            KpiTaskLeader::where('task_id', $task_id)->delete();
+            foreach ($assignedTo as $user_id) {
+                KpiTaskLeader::create(['task_id' => $task_id, 'project_id' => $task->project->id, 'leader_id' => $user_id]);
             }
         }
         return redirect()->back()->with('success', "Invited Successfully.");

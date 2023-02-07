@@ -6,6 +6,7 @@ use App\Models\KpiBigProject;
 use App\Models\KpiProAttachment;
 use App\Models\KpiProject;
 use App\Models\KpiProjectAssignee;
+use App\Models\KpiProjectLeader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use File;
@@ -70,6 +71,11 @@ class KpiProjectController extends Controller
             'status_change_date' => Carbon::now(),
         ]);
 
+        KpiProjectLeader::create([
+            'project_id' => $project->id,
+            'leader_id' => $leader_id,
+        ]);
+
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $attach_origin_name = $file->getClientOriginalName();
@@ -128,6 +134,18 @@ class KpiProjectController extends Controller
         //end-
         return redirect()->back()->with('success', 'Deleted successfully.');
     }
+    public function delete_leader(Request $request)
+    {
+        $leader_id = $request->leader_id;
+        $project_id = $request->project_id;
+        $projectLeaderObj = KpiProjectLeader::where('project_id', $project_id);
+        $manager_count = $projectLeaderObj->count();
+        if($manager_count > 1) {
+            $projectLeaderObj->where('leader_id', $leader_id)->delete();
+            return redirect()->back()->with('success', 'Deleted successfully.');
+        }
+        return redirect()->back()->with('warning', 'Please assign another leader first.');
+    }
 
 
     public function project_member_invite(Request $request)
@@ -138,6 +156,18 @@ class KpiProjectController extends Controller
             KpiProjectAssignee::where('project_id', $project_id)->delete();
             foreach ($assignedTo as $user_id) {
                 KpiProjectAssignee::create(['project_id' => $project_id, 'user_id' => $user_id]);
+            }
+        }
+        return redirect()->back()->with('success', "Invited Successfully.");
+    }
+
+    public function project_leader_invite(Request $request){
+        $project_id = $request->id;
+        $assignedTo = $request->assignedTo;
+        if ($assignedTo){
+            KpiProjectLeader::where('project_id', $project_id)->delete();
+            foreach ($assignedTo as $user_id){
+                KpiProjectLeader::create(['project_id' => $project_id, 'leader_id' => $user_id]);
             }
         }
         return redirect()->back()->with('success', "Invited Successfully.");

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KpiBigAttachment;
 use App\Models\KpiBigProject;
 use App\Models\KpiBigProjectAssignee;
+use App\Models\KpiBigProjectManager;
 use App\Models\KpiProject;
 use App\Models\KpiSubTask;
 use App\Models\KpiTask;
@@ -58,6 +59,11 @@ class KpiBigProjectController extends Controller
             'status_change_date' => Carbon::now(),
             'department_code' => $department_code
             //'status_change_date' => Carbon::now(),
+        ]);
+
+        KpiBigProjectManager::create([
+            'big_project_id' => $big_project->id,
+            'manager_id' => auth()->user()->getAuthIdentifier()
         ]);
 
 
@@ -205,7 +211,6 @@ class KpiBigProjectController extends Controller
     {
         $big_project = KpiBigProject::findOrFail($big_project_id);
         $members = User::members($big_project->department_code);
-        // return $members;
         return view('kpibigproject.detail', compact('big_project', 'members'));
     }
 
@@ -235,6 +240,18 @@ class KpiBigProjectController extends Controller
         //end-
         return redirect()->back()->with('success', 'Deleted successfully.');
     }
+    public function delete_manager(Request $request)
+    {
+        $manager_id = $request->manager_id;
+        $big_project_id = $request->big_project_id;
+        $bigProjectManagerObj = KpiBigProjectManager::where('big_project_id', $big_project_id);
+        $manager_count = $bigProjectManagerObj->count();
+        if($manager_count > 1) {
+            $bigProjectManagerObj->where('manager_id', $manager_id)->delete();
+            return redirect()->back()->with('success', 'Deleted successfully.');
+        }
+        return redirect()->back()->with('warning', 'Please assign another manager first.');
+    }
 
 
     public function invite(Request $request)
@@ -245,6 +262,18 @@ class KpiBigProjectController extends Controller
             KpiBigProjectAssignee::where('big_project_id', $big_project_id)->delete();
             foreach ($assignedTo as $user_id) {
                 KpiBigProjectAssignee::create(['big_project_id' => $big_project_id, 'leader_id' => $user_id]);
+            }
+        }
+        return redirect()->back()->with('success', "Invited Successfully.");
+    }
+    public function invite_manager(Request $request)
+    {
+        $assignedTo = $request->assignedTo;
+        $big_project_id = $request->id;
+        if ($assignedTo) {
+            KpiBigProjectManager::where('big_project_id', $big_project_id)->delete();
+            foreach ($assignedTo as $user_id) {
+                KpiBigProjectManager::create(['big_project_id' => $big_project_id, 'manager_id' => $user_id]);
             }
         }
         return redirect()->back()->with('success', "Invited Successfully.");

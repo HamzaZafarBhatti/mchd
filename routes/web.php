@@ -131,8 +131,10 @@ Route::middleware('auth')->group(function (){
         Route::get('/kpibigproject/edit/{id}', [KpiBigProjectController::class, 'edit'])->name('kpiedit');
         Route::post('/kpibigproject/edit/{id}', [KpiBigProjectController::class, 'p_edit'])->name('kpi_p_edit');
         Route::post('/kpibigproject/delete_leader/{id}', [KpiBigProjectController::class, 'delete_leader'])->name('delete_kpi_leader');
+        Route::post('/kpibigproject/delete_manager/{id}', [KpiBigProjectController::class, 'delete_manager'])->name('delete_kpi_manager');
         Route::post('/kpibigproject/delete_attachment/{id}', [KpiBigProjectController::class, 'delete_attachment'])->name('delete_kpi_attachment');
         Route::post('/kpibigproject/invite/{id}', [KpiBigProjectController::class, 'invite'])->name('kpi_invite');
+        Route::post('/kpibigproject/invite_manager/{id}', [KpiBigProjectController::class, 'invite_manager'])->name('kpi_invite_manager');
         Route::post('/kpibigproject/upload_file/{id}', [KpiBigProjectController::class, 'upload_file'])->name('kpi_upload_file');
         Route::post('/kpibigproject/delete_bigproject/', [KpiBigProjectController::class, 'delete_bigproject'])->name('delete_kpibigproject');
         Route::get('/kpibigproject/chart/{id}', [KpiBigProjectController::class, 'chart'])->name('kpichart');
@@ -149,7 +151,9 @@ Route::middleware('auth')->group(function (){
         Route::get('/kpiproject/edit/{project_id}', [KpiProjectController::class, 'project_edit'])->name('kpiproject_edit');
         Route::post('/kpiproject/edit/{project_id}', [KpiProjectController::class, 'p_project_edit'])->name('p_kpiproject_edit');
         Route::post('/kpiproject/delete_member/{project_id}', [KpiProjectController::class, 'delete_member'])->name('delete_kpi_member');
+        Route::post('/kpiproject/delete_leader/{project_id}', [KpiProjectController::class, 'delete_leader'])->name('delete_kpi_leader');
         Route::post('/kpiproject/invite/{project_id}', [KpiProjectController::class, 'project_member_invite'])->name('kpiproject_member_invite');
+        Route::post('/kpiproject/invite_leader/{project_id}', [KpiProjectController::class, 'project_leader_invite'])->name('kpiproject_leader_invite');
         Route::post('/kpiproject/delete_project', [KpiProjectController::class, 'delete_project_v2'])->name('delete_kpiproject_v2');
         Route::post('/kpiproject/upload_file/{project_id}', [KpiProjectController::class, 'project_upload_file'])->name('kpiproject_upload_file');
         Route::post('/kpiproject/delete_attachment/{project_id}', [KpiProjectController::class, 'kpiproject_delete_attachment']);
@@ -163,7 +167,9 @@ Route::middleware('auth')->group(function (){
         Route::get('/kpitask/edit/{task_id}', [KpiTaskController::class, 'task_edit'])->name('kpitask_edit');
         Route::post('/kpitask/edit/{task_id}', [KpiTaskController::class, 'p_task_edit'])->name('p_kpitask_edit');
         Route::post('/kpitask/delete_member/{task_id}', [KpiTaskController::class, 'task_delete_member'])->name('kpitask_delete_member');
+        Route::post('/kpitask/delete_leader/{task_id}', [KpiTaskController::class, 'task_delete_leader'])->name('kpitask_delete_leader');
         Route::post('/kpitask/invite/{task_id}', [KpiTaskController::class, 'task_member_invite'])->name('kpitask_member_invite');
+        Route::post('/kpitask/invite_leader/{task_id}', [KpiTaskController::class, 'task_leader_invite'])->name('kpitask_leader_invite');
         Route::post('/kpitask/delete_project', [KpiTaskController::class, 'task_delete_project'])->name('kpitask_delete_project');
         Route::post('/kpitask/upload_file/{task_id}', [KpiTaskController::class, 'task_upload_file'])->name('kpitask_upload_file');
         Route::post('/kpitask/delete_attachment/{task_id}', [KpiTaskController::class, 'task_delete_attachment'])->name('kpitask_delete_attachment');

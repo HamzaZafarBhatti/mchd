@@ -34,6 +34,10 @@ class KpiProject extends Model
         return $this->belongsToMany(User::class, 'kpi_project_assignees', 'project_id', 'user_id')
             ->where('allowed', 1);
     }
+    public function assignLeaders(){
+        return $this->belongsToMany(User::class, 'kpi_project_leaders', 'project_id', 'leader_id')
+            ->where('allowed', 1);
+    }
 
     public function tasks(){
         return $this->hasMany(KpiTask::class, 'project_id', 'id')

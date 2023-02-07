@@ -823,7 +823,7 @@
                     <div class="mt-0">
                         <div class="fs-15 mx-5">
                             <h4 class="mb-3">Are you sure ?</h4>
-                            <p class="text-muted mx-4 mb-0">Are you Sure You want to Delete this Member ?</p>
+                            <p class="text-muted mx-4 mb-0">Are you Sure You want to Delete this Leader ?</p>
                         </div>
                     </div>
                     <div class="hstack gap-2 justify-content-center mt-3">

@@ -16,6 +16,10 @@ class KpiBigProject extends Model
         return $this->belongsToMany(User::class, 'kpi_big_project_assignees', 'big_project_id', 'leader_id')
             ->where('allowed', 1);
     }
+    public function assignManagers(){
+        return $this->belongsToMany(User::class, 'kpi_big_project_managers', 'big_project_id', 'manager_id')
+            ->where('allowed', 1);
+    }
 
     public function projects(){
         return $this->hasMany(KpiProject::class, 'big_project_id', 'id')

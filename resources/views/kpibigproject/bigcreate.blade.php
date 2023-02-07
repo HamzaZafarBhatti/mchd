@@ -79,7 +79,7 @@
                 <h4 class="card-title mb-0 flex-grow-1">Leaders <span id="leaders_cnt" class="badge badge-soft-danger">0</span></h4>
                 <div class="flex-shrink-0">
                     <button data-bs-toggle="modal" data-bs-target="#inviteMembersModal" onclick="open_invite_modal()" type="button" class="btn btn-soft-danger btn-sm">
-                        <i class="ri-share-line me-1 align-bottom"></i> Invite Member
+                        <i class="ri-share-line me-1 align-bottom"></i> Invite Leader
                     </button>
                 </div>
             </div>
