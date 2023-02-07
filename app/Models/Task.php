@@ -22,6 +22,10 @@ class Task extends Model
         return $this->belongsToMany(User::class, 'task_assignees', 'task_id', 'user_id')
             ->where('allowed', 1);
     }
+    public function assignLeaders(){
+        return $this->belongsToMany(User::class, 'task_leaders', 'task_id', 'leader_id')
+            ->where('allowed', 1);
+    }
 
     public function project(){
         return $this->belongsTo(Project::class, 'project_id', 'id');

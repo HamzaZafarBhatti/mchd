@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BigAttachment;
 use App\Models\BigProject;
 use App\Models\BigProjectAssignee;
+use App\Models\BigProjectManager;
 use App\Models\Project;
 use App\Models\ProjectAssignee;
 use App\Models\SubTask;
@@ -61,6 +62,10 @@ class BigProjectController extends Controller
             //'status_change_date' => Carbon::now(),
         ]);
 
+        BigProjectManager::create([
+            'big_project_id' => $big_project->id,
+            'manager_id' => auth()->user()->getAuthIdentifier()
+        ]);
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
@@ -236,6 +241,19 @@ class BigProjectController extends Controller
         return redirect()->back()->with('success', 'Deleted successfully.');
     }
 
+    public function delete_manager(Request $request)
+    {
+        $manager_id = $request->manager_id;
+        $big_project_id = $request->big_project_id;
+        $bigProjectManagerObj = BigProjectManager::where('big_project_id', $big_project_id);
+        $manager_count = $bigProjectManagerObj->count();
+        if($manager_count > 1) {
+            $bigProjectManagerObj->where('manager_id', $manager_id)->delete();
+            return redirect()->back()->with('success', 'Deleted successfully.');
+        }
+        return redirect()->back()->with('warning', 'Please assign another manager first.');
+    }
+
 
     public function invite(Request $request)
     {
@@ -245,6 +263,19 @@ class BigProjectController extends Controller
             BigProjectAssignee::where('big_project_id', $big_project_id)->delete();
             foreach ($assignedTo as $user_id) {
                 BigProjectAssignee::create(['big_project_id' => $big_project_id, 'leader_id' => $user_id]);
+            }
+        }
+        return redirect()->back()->with('success', "Invited Successfully.");
+    }
+    public function invite_manager(Request $request)
+    {
+        // return $request;
+        $assignedTo = $request->assignedTo;
+        $big_project_id = $request->id;
+        if ($assignedTo) {
+            BigProjectManager::where('big_project_id', $big_project_id)->delete();
+            foreach ($assignedTo as $user_id) {
+                BigProjectManager::create(['big_project_id' => $big_project_id, 'manager_id' => $user_id]);
             }
         }
         return redirect()->back()->with('success', "Invited Successfully.");

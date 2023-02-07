@@ -34,6 +34,10 @@ class Project extends Model
         return $this->belongsToMany(User::class, 'project_assignees', 'project_id', 'user_id')
             ->where('allowed', 1);
     }
+    public function assignLeaders(){
+        return $this->belongsToMany(User::class, 'project_leaders', 'project_id', 'leader_id')
+            ->where('allowed', 1);
+    }
 
     public function tasks(){
         return $this->hasMany(Task::class, 'project_id', 'id')

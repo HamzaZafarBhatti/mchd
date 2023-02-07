@@ -64,8 +64,10 @@ Route::middleware('auth')->group(function (){
         Route::get('/bigproject/edit/{id}', [BigProjectController::class, 'edit'])->name('edit');
         Route::post('/bigproject/edit/{id}', [BigProjectController::class, 'p_edit'])->name('p_edit');
         Route::post('/bigproject/delete_leader/{id}', [BigProjectController::class, 'delete_leader'])->name('delete_leader');
+        Route::post('/bigproject/delete_manager/{id}', [BigProjectController::class, 'delete_manager'])->name('delete_manager');
         Route::post('/bigproject/delete_attachment/{id}', [BigProjectController::class, 'delete_attachment'])->name('delete_attachment');
         Route::post('/bigproject/invite/{id}', [BigProjectController::class, 'invite'])->name('invite');
+        Route::post('/bigproject/invite_manager/{id}', [BigProjectController::class, 'invite_manager'])->name('invite_manager');
         Route::post('/bigproject/upload_file/{id}', [BigProjectController::class, 'upload_file'])->name('upload_file');
         Route::post('/bigproject/delete_bigproject/', [BigProjectController::class, 'delete_bigproject'])->name('delete_bigproject');
         Route::get('/bigproject/chart/{id}', [BigProjectController::class, 'chart'])->name('chart');
@@ -82,7 +84,9 @@ Route::middleware('auth')->group(function (){
         Route::get('/project/edit/{project_id}', [ProjectController::class, 'project_edit'])->name('project_edit');
         Route::post('/project/edit/{project_id}', [ProjectController::class, 'p_project_edit'])->name('p_project_edit');
         Route::post('/project/delete_member/{project_id}', [ProjectController::class, 'delete_member'])->name('delete_member');
+        Route::post('/project/delete_leader/{project_id}', [ProjectController::class, 'delete_leader'])->name('delete_leader');
         Route::post('/project/invite/{project_id}', [ProjectController::class, 'project_member_invite'])->name('project_member_invite');
+        Route::post('/project/invite_leader/{project_id}', [ProjectController::class, 'project_leader_invite'])->name('project_leader_invite');
         Route::post('/project/delete_project', [ProjectController::class, 'delete_project_v2'])->name('delete_project_v2');
         Route::post('/project/upload_file/{project_id}', [ProjectController::class, 'project_upload_file'])->name('project_upload_file');
         Route::post('/project/delete_attachment/{project_id}', [ProjectController::class, 'project_delete_attachment']);
@@ -97,7 +101,9 @@ Route::middleware('auth')->group(function (){
         Route::get('/task/edit/{task_id}', [TaskController::class, 'task_edit'])->name('task_edit');
         Route::post('/task/edit/{task_id}', [TaskController::class, 'p_task_edit'])->name('p_task_edit');
         Route::post('/task/delete_member/{task_id}', [TaskController::class, 'task_delete_member'])->name('task_delete_member');
+        Route::post('/task/delete_leader/{task_id}', [TaskController::class, 'task_delete_leader'])->name('task_delete_leader');
         Route::post('/task/invite/{task_id}', [TaskController::class, 'task_member_invite'])->name('task_member_invite');
+        Route::post('/task/invite_leader/{task_id}', [TaskController::class, 'task_invite_leader'])->name('task_invite_leader');
         Route::post('/task/delete_project', [TaskController::class, 'task_delete_project'])->name('task_delete_project');
         Route::post('/task/upload_file/{task_id}', [TaskController::class, 'task_upload_file'])->name('task_upload_file');
         Route::post('/task/delete_attachment/{task_id}', [TaskController::class, 'task_delete_attachment'])->name('task_delete_attachment');
