@@ -128,6 +128,7 @@ Route::middleware('auth')->group(function (){
         Route::get('/kpibigcreate/{code}', [KpiBigProjectController::class, 'bigcreate'])->name('kpibigcreate');
         Route::post('/create_kpi_big_project', [KpiBigProjectController::class, 'create_big_project'])->name('create_kpi_big_project');
         Route::get('/kpibigproject/detail/{id}', [KpiBigProjectController::class, 'detail'])->name('kpidetail');
+        Route::post('/kpibigproject/add_comment/{id}', [KpiBigProjectController::class, 'add_comment'])->name('kpibigproject.add_comment');
         Route::get('/kpibigproject/edit/{id}', [KpiBigProjectController::class, 'edit'])->name('kpiedit');
         Route::post('/kpibigproject/edit/{id}', [KpiBigProjectController::class, 'p_edit'])->name('kpi_p_edit');
         Route::post('/kpibigproject/delete_leader/{id}', [KpiBigProjectController::class, 'delete_leader'])->name('delete_kpi_leader');
@@ -157,6 +158,7 @@ Route::middleware('auth')->group(function (){
         Route::post('/kpiproject/delete_project', [KpiProjectController::class, 'delete_project_v2'])->name('delete_kpiproject_v2');
         Route::post('/kpiproject/upload_file/{project_id}', [KpiProjectController::class, 'project_upload_file'])->name('kpiproject_upload_file');
         Route::post('/kpiproject/delete_attachment/{project_id}', [KpiProjectController::class, 'kpiproject_delete_attachment']);
+        Route::post('/kpiproject/add_comment/{id}', [KpiProjectController::class, 'add_comment'])->name('kpiproject.add_comment');
 
         // Kpi Tasks
         Route::get('/kpitasklist', [KpiTaskController::class, 'tasklist'])->name('kpitasklist');
@@ -173,6 +175,7 @@ Route::middleware('auth')->group(function (){
         Route::post('/kpitask/delete_project', [KpiTaskController::class, 'task_delete_project'])->name('kpitask_delete_project');
         Route::post('/kpitask/upload_file/{task_id}', [KpiTaskController::class, 'task_upload_file'])->name('kpitask_upload_file');
         Route::post('/kpitask/delete_attachment/{task_id}', [KpiTaskController::class, 'task_delete_attachment'])->name('kpitask_delete_attachment');
+        Route::post('/kpitask/add_comment/{id}', [KpiTaskController::class, 'add_comment'])->name('kpitask.add_comment');
 
         // Sub Tasks
         Route::get('/kpisublist', [KpiSubTaskController::class, 'sublist'])->name('kpisublist');
@@ -187,6 +190,7 @@ Route::middleware('auth')->group(function (){
         Route::post('/kpisubtask/delete_project', [KpiSubTaskController::class, 'sub_task_delete_project'])->name('kpisub_task_delete_project');
         Route::post('/kpisubtask/upload_file/{task_id}', [KpiSubTaskController::class, 'sub_task_upload_file'])->name('kpisub_task_upload_file');
         Route::post('/kpisubtask/delete_attachment/{task_id}', [KpiSubTaskController::class, 'sub_task_delete_attachment'])->name('kpisub_task_delete_attachment');
+        Route::post('/kpisubtask/add_comment/{id}', [KpiSubTaskController::class, 'add_comment'])->name('kpisubtask.add_comment');
 
 
 

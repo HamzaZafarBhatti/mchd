@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\KpiBigAttachment;
 use App\Models\KpiBigProject;
 use App\Models\KpiBigProjectAssignee;
@@ -210,8 +211,9 @@ class KpiBigProjectController extends Controller
     public function detail(Request $request, $big_project_id)
     {
         $big_project = KpiBigProject::findOrFail($big_project_id);
+        $comments = $big_project->comments;
         $members = User::members($big_project->department_code);
-        return view('kpibigproject.detail', compact('big_project', 'members'));
+        return view('kpibigproject.detail', compact('big_project', 'members', 'comments'));
     }
 
     public function edit($big_project_id)
@@ -411,5 +413,19 @@ class KpiBigProjectController extends Controller
         $model->save();
 
         return redirect()->back()->with('success', 'Changed Successfully');
+    }
+
+    public function add_comment(Request $request, $id)
+    {
+        $project = KpiBigProject::find($id);
+
+        $comment = new Comment();
+        $comment->body = $request->comment;
+        $comment->user_id = auth()->user()->id;
+
+        $project->comments()->save($comment);
+        $comments = $project->comments;
+
+        return view('comments.comment', compact('comments'))->render();
     }
 }

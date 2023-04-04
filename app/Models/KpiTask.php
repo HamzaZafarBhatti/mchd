@@ -47,4 +47,9 @@ class KpiTask extends Model
     public function attachments(){
         return $this->hasMany(KpiTaskAttachment::class, 'task_id', 'id');
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->latest();
+    }
 }

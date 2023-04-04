@@ -34,4 +34,9 @@ class KpiSubTask extends Model
         return $this->belongsToMany(User::class, 'kpi_sub_task_assignees', 'sub_task_id', 'user_id')
             ->where('allowed', 1);
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->latest();
+    }
 }

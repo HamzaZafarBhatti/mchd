@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\KpiProject;
 use App\Models\KpiTask;
 use App\Models\KpiTaskAssignee;
@@ -114,9 +115,24 @@ class KpiTaskController extends Controller
     public function task_detail($task_id)
     {
         $task = KpiTask::findOrFail($task_id);
+        $comments = $task->comments;
         $members = $task->project->assignUsers;
         $leaders = User::members(auth()->user()->department_code);
-        return view('kpitask.detail', compact('task', 'members', 'leaders'));
+        return view('kpitask.detail', compact('task', 'members', 'leaders', 'comments'));
+    }
+
+    public function add_comment(Request $request, $id)
+    {
+        $task = KpiTask::find($id);
+
+        $comment = new Comment();
+        $comment->body = $request->comment;
+        $comment->user_id = auth()->user()->id;
+
+        $task->comments()->save($comment);
+        $comments = $task->comments;
+
+        return view('comments.comment', compact('comments'))->render();
     }
 
 

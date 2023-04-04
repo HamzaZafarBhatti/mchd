@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\KpiBigProject;
 use App\Models\KpiProAttachment;
 use App\Models\KpiProject;
@@ -105,8 +106,10 @@ class KpiProjectController extends Controller
     public function project_detail($big_project_id)
     {
         $project = KpiProject::findOrFail($big_project_id);
+        $comments = $project->comments;
+        // return $comments;
         $members = User::members(auth()->user()->department_code);
-        return view('kpiproject.detail', compact('project', 'members'));
+        return view('kpiproject.detail', compact('project', 'members', 'comments'));
     }
 
     public function project_edit($project_id)
@@ -232,5 +235,19 @@ class KpiProjectController extends Controller
         }
         KpiProAttachment::where('pro_id', $project_id)->where('id', $attachment_id)->delete();
         return redirect()->back()->with('success', 'Deleted successfully.');
+    }
+
+    public function add_comment(Request $request, $id)
+    {
+        $project = KpiProject::find($id);
+
+        $comment = new Comment();
+        $comment->body = $request->comment;
+        $comment->user_id = auth()->user()->id;
+
+        $project->comments()->save($comment);
+        $comments = $project->comments;
+
+        return view('comments.comment', compact('comments'))->render();
     }
 }

@@ -179,6 +179,29 @@
                                 </div>
                                 <!-- end card body -->
                             </div>
+                            <div class="card border">
+                                <div class="card-header border-bottom-dashed align-items-center d-flex">
+                                    <h6 class="mb-0 fw-semibold text-uppercase flex-grow-1">Comments</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="comments">
+                                        @include('comments.comment')
+                                    </div>
+                                    <div class="pt-3 border-top border-top-dashed mt-4">
+                                        <form action="{{ route('kpibigproject.add_comment', $big_project->id) }}"
+                                            method="post" id="form_comment">
+                                            <div class="form-group">
+                                                <textarea name="comment" id="comment" cols="30" rows="2" class="form-control"></textarea>
+                                            </div>
+                                            <div class="pt-3 border-top border-top-dashed mt-4 d-flex justify-content-end">
+                                                <button type="submit" class="btn btn-outline-primary w-sm me-1">Add
+                                                    Comment</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- end card body -->
+                            </div>
                             <!-- end card -->
                         </div>
                         <!-- ene col -->
@@ -194,7 +217,8 @@
                                         <div class="flex-shrink-0">
                                             <button data-bs-toggle="modal" onclick="open_invite_modal_manager()"
                                                 type="button" class="btn btn-soft-danger btn-sm"><i
-                                                    class="ri-share-line me-1 align-bottom"></i> Invite Manager</button>
+                                                    class="ri-share-line me-1 align-bottom"></i> Invite
+                                                Manager</button>
                                         </div>
                                     @endif
                                     {{-- <div class="float-lg-end">
@@ -501,7 +525,8 @@
                                         <h6 class="mb-1">Your order is placed <span
                                                 class="badge bg-soft-danger text-danger align-middle ms-1">Out of
                                                 Delivery</span></h6>
-                                        <p class="text-muted mb-2">These customers can rest assured their order has been
+                                        <p class="text-muted mb-2">These customers can rest assured their order has
+                                            been
                                             placed.</p>
                                         <small class="mb-0 text-muted">16 Nov</small>
                                     </div>
@@ -513,7 +538,8 @@
                                     </div>
                                     <div class="flex-grow-1 ms-3">
                                         <h6 class="mb-1">Lewis Pratt</h6>
-                                        <p class="text-muted mb-2">They all have something to say beyond the words on the
+                                        <p class="text-muted mb-2">They all have something to say beyond the words on
+                                            the
                                             page. They can come across as casual or neutral, exotic or graphic. </p>
                                         <small class="mb-0 text-muted">22 Oct</small>
                                     </div>
@@ -597,7 +623,8 @@
                                                             </p>
                                                         </div>
                                                         <div class="flex-shrink-0">
-                                                            <p class="text-primary fs-12 mb-0">{{ $inprogress_cnt }}</p>
+                                                            <p class="text-primary fs-12 mb-0">{{ $inprogress_cnt }}
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </li><!-- end -->
@@ -612,7 +639,8 @@
                                                             </p>
                                                         </div>
                                                         <div class="flex-shrink-0">
-                                                            <p class="text-primary fs-12 mb-0">{{ $completed_cnt }}</p>
+                                                            <p class="text-primary fs-12 mb-0">{{ $completed_cnt }}
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </li><!-- end -->
@@ -628,7 +656,8 @@
                                                             </p>
                                                         </div>
                                                         <div class="flex-shrink-0">
-                                                            <p class="text-primary fs-12 mb-0">{{ $notyetstarted_cnt }}
+                                                            <p class="text-primary fs-12 mb-0">
+                                                                {{ $notyetstarted_cnt }}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -659,7 +688,8 @@
                                                             </p>
                                                         </div>
                                                         <div class="flex-shrink-0">
-                                                            <p class="text-primary fs-12 mb-0">{{ $cancelled_cnt }}</p>
+                                                            <p class="text-primary fs-12 mb-0">{{ $cancelled_cnt }}
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </li><!-- end -->
@@ -695,7 +725,8 @@
 
                         @if (\App\Helper\Helper::clinicProjectCreatable(auth()->user(), $big_project))
                             <div class="flex-shrink-0">
-                                <a href="{{ url('kpiproject/create/' . $big_project->id) }}" class="btn btn-info add-btn">
+                                <a href="{{ url('kpiproject/create/' . $big_project->id) }}"
+                                    class="btn btn-info add-btn">
                                     <i class="ri-add-fill me-1 align-bottom"></i> Create Project</a>
                             </div>
                         @endif
@@ -762,7 +793,8 @@
                                                         <p class="text-muted mb-1">Status</p>
                                                         <div
                                                             class="badge badge-soft-{{ \App\Helper\Helper::getStatusColor($item->status) }} fs-12">
-                                                            {{ config('constants.project_status')[$item->status] }}</div>
+                                                            {{ config('constants.project_status')[$item->status] }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -917,7 +949,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form id="form_manager" method="post" action="{{ url('kpibigproject/invite_manager/' . $big_project->id) }}">
+                    <form id="form_manager" method="post"
+                        action="{{ url('kpibigproject/invite_manager/' . $big_project->id) }}">
                         <input name="id" type="hidden" value="{{ $big_project->id }}">
                         @csrf
                     </form>
@@ -1095,7 +1128,8 @@
                     </div>
                     <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
                         <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn w-sm btn-danger" id="remove-project">Yes, Delete It!</button>
+                        <button type="button" class="btn w-sm btn-danger" id="remove-project">Yes, Delete
+                            It!</button>
                     </div>
                 </div>
 
@@ -1183,6 +1217,28 @@
             $("#overlay").fadeIn(50);
         });
 
+        $('#form_comment').on('submit', function(e) {
+            e.preventDefault();
+            var _this = this;
+            var comment = $('#comment').val();
+            $.ajax({
+                url: _this.action,
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    comment: comment
+                },
+                method: _this.method,
+                success: function(response) {
+                    _this.reset();
+                    $('.comments').empty().html(response)
+                }
+            }).done(function() {
+                setTimeout(function() {
+                    $("#overlay").fadeOut(200);
+                }, 500);
+            });
+        })
+
         let candidate_user_list = @json($members);
         let user_list = @json($big_project->assignUsers);
 
@@ -1200,6 +1256,7 @@
                     $(obj).text("Add");
                 }
             }
+
             function add_manager(obj, i) {
                 var user = candidate_user_list_manager[i];
                 if (!push_manager(user)) {
@@ -1227,6 +1284,7 @@
                 }
                 return status;
             }
+
             function push_manager(user) {
                 var status = false;
                 for (var i = 0; i < user_list_manager.length; i++) {
@@ -1249,6 +1307,7 @@
                 for (var i = 0; i < user_list.length; i++)
                     $('.leaders_on_modal').append(avatar(user_list[i]));
             }
+
             function delete_manager_at_top_modal(user) {
                 $('.managers_on_modal').empty();
                 for (var i = 0; i < user_list_manager.length; i++)
@@ -1257,32 +1316,47 @@
 
             function html_candidate_item(candidate, text, i) {
                 var html = '<div class="d-flex align-items-center member_item">\
-                    <div class="avatar-xs flex-shrink-0 me-3">\
-                        ' + avatar(candidate) + '\
-                    </div>\
-                    <div class="flex-grow-1">\
-                        <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' + candidate.name + '</a>\
-                        </h5>\
-                    </div>\
-                    <div class="flex-shrink-0">\
-                        <a type="button" class="btn btn-light btn-sm" onclick="add_user(this, ' + i + ')">' + text + '</a>\
-                    </div>\
-                </div>';
+                                                                    <div class="avatar-xs flex-shrink-0 me-3">\
+                                                                        ' + avatar(candidate) +
+                    '\
+                                                                    </div>\
+                                                                    <div class="flex-grow-1">\
+                                                                        <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' +
+                    candidate
+                    .name +
+                    '</a>\
+                                                                        </h5>\
+                                                                    </div>\
+                                                                    <div class="flex-shrink-0">\
+                                                                        <a type="button" class="btn btn-light btn-sm" onclick="add_user(this, ' +
+                    i +
+                    ')">' +
+                    text + '</a>\
+                                                                    </div>\
+                                                                </div>';
                 return html;
             }
+
             function html_manager_item(manager, text, i) {
                 var html = '<div class="d-flex align-items-center member_item">\
-                        <div class="avatar-xs flex-shrink-0 me-3">\
-                            ' + avatar(manager) + '\
-                        </div>\
-                        <div class="flex-grow-1">\
-                            <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' + manager.name + '</a>\
-                            </h5>\
-                        </div>\
-                        <div class="flex-shrink-0">\
-                            <a type="button" class="btn btn-light btn-sm" onclick="add_manager(this, ' + i + ')">' + text + '</a>\
-                        </div>\
-                    </div>';
+                                                                        <div class="avatar-xs flex-shrink-0 me-3">\
+                                                                            ' + avatar(manager) +
+                    '\
+                                                                        </div>\
+                                                                        <div class="flex-grow-1">\
+                                                                            <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' +
+                    manager
+                    .name +
+                    '</a>\
+                                                                            </h5>\
+                                                                        </div>\
+                                                                        <div class="flex-shrink-0">\
+                                                                            <a type="button" class="btn btn-light btn-sm" onclick="add_manager(this, ' +
+                    i +
+                    ')">' +
+                    text + '</a>\
+                                                                        </div>\
+                                                                    </div>';
                 return html;
             }
 
@@ -1312,6 +1386,7 @@
 
 
             }
+
             function update_modal_manager(user_list_manager) {
                 $('.managers_on_modal').empty();
                 for (let i = 0; i < user_list_manager.length; i++) {
@@ -1342,6 +1417,7 @@
             function add_leader_at_top_modal(user) {
                 $('.leaders_on_modal').append(avatar(user));
             }
+
             function add_manager_at_top_modal(user) {
                 $('.managers_on_modal').append(avatar(user));
             }
@@ -1353,23 +1429,28 @@
                     user.name.split(" ")[user.name.split(" ").length - 1][0];
 
                 let leader = '<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"\
-                                data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
-                                    <div class="' + size + '">\
-                                        <img src="{{ URL::asset('public/images/') }}/' + user.avatar + '" alt="" class="rounded-circle img-fluid">\
-                                    </div>\
-                              </a>';
+                                                                                data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
+                                                                                    <div class="' + size +
+                    '">\
+                                                                                        <img src="{{ URL::asset('public/images/') }}/' +
+                    user
+                    .avatar + '" alt="" class="rounded-circle img-fluid">\
+                                                                                    </div>\
+                                                                              </a>';
 
                 if (user.avatar === 'user_default.jpg')
-                    leader = '<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"\
-                                data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
-                                    <div class="avatar-xs">\
-                                        <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' +
-                    user.name + '" class="' + size + ' me-0 d-inline-block">\
-                                        <div class="avatar-title rounded-circle bg-secondary text-white text-uppercase">' +
+                    leader =
+                    '<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"\
+                                                                                data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
+                                                                                    <div class="avatar-xs">\
+                                                                                        <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' +
+                    user.name + '" class="' + size +
+                    ' me-0 d-inline-block">\
+                                                                                        <div class="avatar-title rounded-circle bg-secondary text-white text-uppercase">' +
                     clientNameBothLetters + '</div>\
-                                    </div>\
-                                    </div>\
-                              </a>';
+                                                                                    </div>\
+                                                                                    </div>\
+                                                                              </a>';
                 return leader;
             }
 
@@ -1398,6 +1479,7 @@
                 });
                 $("#form").submit();
             }
+
             function invite_manager() {
                 if (user_list_manager.length === 0) {
                     notification("Please select manager.");

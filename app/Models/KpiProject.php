@@ -55,4 +55,9 @@ class KpiProject extends Model
     public function big_project(){
         return $this->belongsTo(KpiBigProject::class, 'big_project_id', 'id');
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->latest();
+    }
 }

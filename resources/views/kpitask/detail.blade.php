@@ -162,6 +162,29 @@
                                 </div>
                                 <!-- end card body -->
                             </div>
+                            <div class="card border">
+                                <div class="card-header border-bottom-dashed align-items-center d-flex">
+                                    <h6 class="mb-0 fw-semibold text-uppercase flex-grow-1">Comments</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="comments">
+                                        @include('comments.comment')
+                                    </div>
+                                    <div class="pt-3 border-top border-top-dashed mt-4">
+                                        <form action="{{ route('kpitask.add_comment', $task->id) }}" method="post"
+                                            id="form_comment">
+                                            <div class="form-group">
+                                                <textarea name="comment" id="comment" cols="30" rows="2" class="form-control"></textarea>
+                                            </div>
+                                            <div class="pt-3 border-top border-top-dashed mt-4 d-flex justify-content-end">
+                                                <button type="submit" class="btn btn-outline-primary w-sm me-1">Add
+                                                    Comment</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- end card body -->
+                            </div>
                             <!-- end card -->
                         </div>
                         <!-- ene col -->
@@ -954,6 +977,27 @@
 
 @section('script-bottom')
     <script>
+        $('#form_comment').on('submit', function(e) {
+            e.preventDefault();
+            var _this = this;
+            var comment = $('#comment').val();
+            $.ajax({
+                url: _this.action,
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    comment: comment
+                },
+                method: _this.method,
+                success: function(response) {
+                    _this.reset();
+                    $('.comments').empty().html(response)
+                }
+            }).done(function() {
+                setTimeout(function() {
+                    $("#overlay").fadeOut(200);
+                }, 500);
+            });
+        })
         let candidate_user_list = @json($members);
         let user_list = @json($task->assignUsers);
         let candidate_leader_list = @json($leaders);
@@ -1039,40 +1083,41 @@
 
             function html_candidate_item(candidate, text, i) {
                 var html = '<div class="d-flex align-items-center member_item">\
-                                        <div class="avatar-xs flex-shrink-0 me-3">\
-                                            ' + avatar(candidate) + '\
-                                        </div>\
-                                        <div class="flex-grow-1">\
-                                            <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' +
+                                            <div class="avatar-xs flex-shrink-0 me-3">\
+                                                ' + avatar(candidate) + '\
+                                            </div>\
+                                            <div class="flex-grow-1">\
+                                                <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' +
                     candidate
-                    .name + '</a>\
-                                            </h5>\
-                                        </div>\
-                                        <div class="flex-shrink-0">\
-                                            <button type="button" class="btn btn-light btn-sm" onclick="add_user(this, ' +
+                    .name +
+                    '</a>\
+                                                </h5>\
+                                            </div>\
+                                            <div class="flex-shrink-0">\
+                                                <button type="button" class="btn btn-light btn-sm" onclick="add_user(this, ' +
                     i +
                     ')">' +
                     text + '</button>\
-                                        </div>\
-                                    </div>';
+                                            </div>\
+                                        </div>';
                 return html;
             }
 
             function html_leader_item(candidate, text, i) {
                 var html = '<div class="d-flex align-items-center member_item">\
-                            <div class="avatar-xs flex-shrink-0 me-3">\
-                                ' + avatar(candidate) + '\
-                            </div>\
-                            <div class="flex-grow-1">\
-                                <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' + candidate.name + '</a>\
-                                </h5>\
-                            </div>\
-                            <div class="flex-shrink-0">\
-                                <button type="button" class="btn btn-light btn-sm" onclick="add_leader(this, ' + i +
+                                <div class="avatar-xs flex-shrink-0 me-3">\
+                                    ' + avatar(candidate) + '\
+                                </div>\
+                                <div class="flex-grow-1">\
+                                    <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' + candidate.name + '</a>\
+                                    </h5>\
+                                </div>\
+                                <div class="flex-shrink-0">\
+                                    <button type="button" class="btn btn-light btn-sm" onclick="add_leader(this, ' + i +
                     ')">' +
                     text + '</button>\
-                            </div>\
-                        </div>';
+                                </div>\
+                            </div>';
                 return html;
             }
 
@@ -1132,25 +1177,25 @@
                     user.name.split(" ")[user.name.split(" ").length - 1][0];
 
                 let leader = '<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"\
-                                                data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
-                                                    <div class="' + size + '">\
-                                                        <img src="{{ URL::asset('public/images/') }}/' + user.avatar + '" alt="" class="rounded-circle img-fluid">\
-                                                    </div>\
-                                              </a>';
+                                                    data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
+                                                        <div class="' + size + '">\
+                                                            <img src="{{ URL::asset('public/images/') }}/' + user.avatar + '" alt="" class="rounded-circle img-fluid">\
+                                                        </div>\
+                                                  </a>';
 
                 if (user.avatar === 'user_default.jpg')
                     leader =
                     '<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"\
-                                                data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
-                                                    <div class="avatar-xs">\
-                                                        <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' +
+                                                    data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
+                                                        <div class="avatar-xs">\
+                                                            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' +
                     user.name + '" class="' + size +
                     ' me-0 d-inline-block">\
-                                                        <div class="avatar-title rounded-circle bg-secondary text-white text-uppercase">' +
+                                                            <div class="avatar-title rounded-circle bg-secondary text-white text-uppercase">' +
                     clientNameBothLetters + '</div>\
-                                                    </div>\
-                                                    </div>\
-                                              </a>';
+                                                        </div>\
+                                                        </div>\
+                                                  </a>';
                 return leader;
             }
 
@@ -1180,6 +1225,7 @@
                 });
                 $("#form").submit();
             }
+
             function invite_leader() {
                 if (leader_list.length === 0) {
                     notification("Please select leader.");

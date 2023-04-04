@@ -32,6 +32,20 @@
             display: none;
             z-index: 1000;
         }
+        .comments {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .comments .comment {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            margin-right: 1rem;
+            border: 1px solid var(--vz-primary);
+            border-radius: 1rem;
+            padding: 10px;
+        }
     </style>
     @include('layouts.head-css')
 </head>
