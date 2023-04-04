@@ -54,18 +54,18 @@
                         <td>{{$kpi->group->name}}</td>
                         <td>{{$kpi->criteria}}</td>
                         <td>{{$kpi->unit->name}}</td>
-                        <td>{{$kpi->data($year, $type)->jan ?? ""}}</td>
-                        <td>{{$kpi->data($year, $type)->feb ?? ""}}</td>
-                        <td>{{$kpi->data($year, $type)->mar ?? ""}}</td>
-                        <td>{{$kpi->data($year, $type)->apr ?? ""}}</td>
-                        <td>{{$kpi->data($year, $type)->may ?? ""}}</td>
-                        <td>{{$kpi->data($year, $type)->jun ?? ""}}</td>
-                        <td>{{$kpi->data($year, $type)->jul ?? ""}}</td>
-                        <td>{{$kpi->data($year, $type)->aug ?? ""}}</td>
-                        <td>{{$kpi->data($year, $type)->sep ?? ""}}</td>
-                        <td>{{$kpi->data($year, $type)->oct ?? ""}}</td>
-                        <td>{{$kpi->data($year, $type)->nov ?? ""}}</td>
-                        <td>{{$kpi->data($year, $type)->dec ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->jan ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->feb ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->mar ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->apr ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->may ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->jun ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->jul ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->aug ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->sep ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->oct ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->nov ?? ""}}</td>
+                        <td class="year">{{$kpi->data($year, $type)->dec ?? ""}}</td>
                         <td style="display: none">{{$kpi->id}}</td>
                     </tr>
                 @endforeach
@@ -113,9 +113,14 @@
                 //     (0, _jquery2.default)('.alert').show();
                 //     return false; // changes can be rejected
                 // }
+                console.log(cell.text())
 
                 var data = [];
                 for (let i = 3; i < _row.length; i++){
+                    if($(_row[i]).text() === '') {
+                        $(_row[i]).html(cell.text())
+                    }
+                    console.log($(_row[i]).text())
                     data.push($(_row[i]).text());
                 }
 
