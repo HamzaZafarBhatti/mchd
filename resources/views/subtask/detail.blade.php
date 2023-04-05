@@ -143,7 +143,7 @@
                                     <h6 class="mb-0 fw-semibold text-uppercase flex-grow-1">Comments</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="comments">
+                                    <div class="comments" data-simplebar>
                                         @include('comments.comment')
                                     </div>
                                     <div class="pt-3 border-top border-top-dashed mt-4">
