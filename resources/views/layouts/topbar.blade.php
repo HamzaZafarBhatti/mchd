@@ -521,18 +521,20 @@
                                                             <p class="mb-1">{{ $item->message }}</p>
                                                         </div>
                                                         <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                            <span><i class="mdi mdi-clock-outline"></i>{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</span>
+                                                            <span><i
+                                                                    class="mdi mdi-clock-outline"></i>{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</span>
                                                         </p>
                                                     </div>
-                                                    {{-- <div class="px-2 fs-15"> --}}
-                                                        {{-- <a href="{{ route('') }}"></a> --}}
-                                                        {{-- <input class="form-check-input" type="checkbox"> --}}
-                                                    {{-- </div> --}}
+                                                    <div class="px-2 fs-15">
+                                                        <a href="{{ route('notifications.mark_read', $item->id) }}" class="text-success">
+                                                            <i class="ri-check-double-line"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         @endforeach
                                         <div class="my-3 text-center">
-                                            <a type="button" href="#"
+                                            <a type="button" href="{{ route('notifications.index') }}"
                                                 class="btn btn-soft-success waves-effect waves-light">View
                                                 All Notifications <i class="ri-arrow-right-line align-middle"></i></a>
                                         </div>

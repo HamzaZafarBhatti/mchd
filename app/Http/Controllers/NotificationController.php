@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification as ModelsNotification;
 use App\Models\User;
 use App\Notifications\SendPushNotification;
 use Illuminate\Http\Request;
@@ -19,10 +20,20 @@ class NotificationController extends Controller
 
     public function index()
     {
-        return view('product');
+        $my_notifications = auth()->user()->notifications()->orderBy('notification_users.is_read', 'asc')->orderBy('notification_users.id', 'desc')->paginate(15);
+        return view('notification.index', compact('my_notifications'));
     }
 
-    public function sendOfferNotification() {
+    public function mark_read($id)
+    {
+        auth()->user()->notifications()->updateExistingPivot($id, [
+            'is_read' => true,
+        ]);
+        return redirect()->route('notifications.index');
+    }
+
+    public function sendOfferNotification()
+    {
         $userSchema = User::first();
 
         $offerData = [
@@ -40,23 +51,25 @@ class NotificationController extends Controller
     }
 
 
-    public function updateToken(Request $request){
-        try{
-            $request->user()->update(['fcm_token'=>$request->token]);
+    public function updateToken(Request $request)
+    {
+        try {
+            $request->user()->update(['fcm_token' => $request->token]);
             return response()->json([
-                'success'=>true
+                'success' => true
             ]);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             report($e);
             return response()->json([
-                'success'=>false
-            ],500);
+                'success' => false
+            ], 500);
         }
     }
 
-    public function notification($title = "", $body = "", $fcmTokens = array()){
+    public function notification($title = "", $body = "", $fcmTokens = array())
+    {
 
-        try{
+        try {
             //$fcmTokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->toArray();
             $SERVER_API_KEY = config('constants.server_key');
 
@@ -93,12 +106,10 @@ class NotificationController extends Controller
 
             $response = curl_exec($ch);
 
-            return redirect("/")->with('success','Notification Sent Successfully!!');
-
-        }catch(\Exception $e){
+            return redirect("/")->with('success', 'Notification Sent Successfully!!');
+        } catch (\Exception $e) {
             report($e);
-            return redirect("/")->with('error','Something goes wrong while sending notification.');
+            return redirect("/")->with('error', 'Something goes wrong while sending notification.');
         }
     }
-
 }
