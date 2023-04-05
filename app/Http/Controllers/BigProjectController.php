@@ -6,6 +6,7 @@ use App\Models\BigAttachment;
 use App\Models\BigProject;
 use App\Models\BigProjectAssignee;
 use App\Models\BigProjectManager;
+use App\Models\Comment;
 use App\Models\Project;
 use App\Models\ProjectAssignee;
 use App\Models\SubTask;
@@ -210,8 +211,23 @@ class BigProjectController extends Controller
     public function detail(Request $request, $big_project_id)
     {
         $big_project = BigProject::findOrFail($big_project_id);
+        $comments = $big_project->comments;
         $members = User::members($big_project->department_code);
-        return view('bigproject.detail', compact('big_project', 'members'));
+        return view('bigproject.detail', compact('big_project', 'members', 'comments'));
+    }
+
+    public function add_comment(Request $request, $id)
+    {
+        $project = BigProject::find($id);
+
+        $comment = new Comment();
+        $comment->body = $request->comment;
+        $comment->user_id = auth()->user()->id;
+
+        $project->comments()->save($comment);
+        $comments = $project->comments;
+
+        return view('comments.comment', compact('comments'))->render();
     }
 
     public function edit($big_project_id)

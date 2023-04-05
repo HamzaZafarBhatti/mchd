@@ -11,48 +11,63 @@ class Project extends Model
 {
     use HasFactory, Sortable;
 
-    protected $fillable = ['big_project_id', 'leader_id', 'name', 'description', 'start_date',
+    protected $fillable = [
+        'big_project_id', 'leader_id', 'name', 'description', 'start_date',
         'end_date', 'status', 'leader_name', 'assignee', 'assignee_names', 'status_change_date',
-        'attach_origin_name', 'attach_path', 'department_code'];
+        'attach_origin_name', 'attach_path', 'department_code'
+    ];
     public $sortable = ['name', 'status', 'end_date'];
 
-    public static function getProjectsByStatusWithPagination($status, $cnt){
-        if ($status === "all"){
+    public static function getProjectsByStatusWithPagination($status, $cnt)
+    {
+        if ($status === "all") {
             $projects = Project::sortable()->paginate($cnt);
-        }else
+        } else
             $projects = Project::where('status', $status)->sortable()->paginate($cnt);
 
         return $projects;
     }
 
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->latest();
+    }
 
-    public function user(){
+
+    public function user()
+    {
         return $this->belongsTo(User::class, 'leader_id', 'id');
     }
 
-    public function assignUsers(){
+    public function assignUsers()
+    {
         return $this->belongsToMany(User::class, 'project_assignees', 'project_id', 'user_id')
             ->where('allowed', 1);
     }
-    public function assignLeaders(){
+    public function assignLeaders()
+    {
         return $this->belongsToMany(User::class, 'project_leaders', 'project_id', 'leader_id')
             ->where('allowed', 1);
     }
 
-    public function tasks(){
+    public function tasks()
+    {
         return $this->hasMany(Task::class, 'project_id', 'id')
-            ->select(["*", DB::raw( 'DATEDIFF(end_date, start_date) as period')])->orderBy('id', 'desc');
+            ->select(["*", DB::raw('DATEDIFF(end_date, start_date) as period')])->orderBy('id', 'desc');
     }
 
-    public function department(){
+    public function department()
+    {
         return $this->belongsTo(Department::class, 'department_code', 'code');
     }
 
-    public function attachments(){
+    public function attachments()
+    {
         return $this->hasMany(ProAttachment::class, 'pro_id', 'id');
     }
 
-    public function big_project(){
+    public function big_project()
+    {
         return $this->belongsTo(BigProject::class, 'big_project_id', 'id');
     }
 }

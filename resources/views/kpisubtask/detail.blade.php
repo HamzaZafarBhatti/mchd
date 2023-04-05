@@ -695,27 +695,6 @@
 
 @section('script-bottom')
     <script>
-        $('#form_comment').on('submit', function(e) {
-            e.preventDefault();
-            var _this = this;
-            var comment = $('#comment').val();
-            $.ajax({
-                url: _this.action,
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    comment: comment
-                },
-                method: _this.method,
-                success: function(response) {
-                    _this.reset();
-                    $('.comments').empty().html(response)
-                }
-            }).done(function() {
-                setTimeout(function() {
-                    $("#overlay").fadeOut(200);
-                }, 500);
-            });
-        })
         let candidate_user_list = @json($members);
         let user_list = @json($sub_task->assignUsers); { // invite leader
             function add_user(obj, i) {

@@ -18,35 +18,45 @@ class Task extends Model
         'assignee_names', 'project_name', 'leader_name', 'department_code', 'status_change_date'
     ];
 
-    public function assignUsers(){
+    public function assignUsers()
+    {
         return $this->belongsToMany(User::class, 'task_assignees', 'task_id', 'user_id')
             ->where('allowed', 1);
     }
-    public function assignLeaders(){
+    public function assignLeaders()
+    {
         return $this->belongsToMany(User::class, 'task_leaders', 'task_id', 'leader_id')
             ->where('allowed', 1);
     }
 
-    public function project(){
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->latest();
+    }
+
+    public function project()
+    {
         return $this->belongsTo(Project::class, 'project_id', 'id');
     }
 
-    public function leader(){
+    public function leader()
+    {
         return $this->belongsTo(User::class, 'leader_id', 'id');
     }
 
-    public function subTasks(){
+    public function subTasks()
+    {
         return $this->hasMany(SubTask::class, 'task_id', 'id')
-            ->select(["*", DB::raw( 'DATEDIFF(end_date, start_date) as period')])->orderBy('id', 'desc');
+            ->select(["*", DB::raw('DATEDIFF(end_date, start_date) as period')])->orderBy('id', 'desc');
     }
 
-    public function department(){
+    public function department()
+    {
         return $this->belongsTo(Department::class, 'department_code', 'code');
     }
 
-    public function attachments(){
+    public function attachments()
+    {
         return $this->hasMany(TaskAttachment::class, 'task_id', 'id');
     }
-
-
 }

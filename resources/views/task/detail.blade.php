@@ -162,6 +162,29 @@
                                 </div>
                                 <!-- end card body -->
                             </div>
+                            <div class="card border">
+                                <div class="card-header border-bottom-dashed align-items-center d-flex">
+                                    <h6 class="mb-0 fw-semibold text-uppercase flex-grow-1">Comments</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="comments">
+                                        @include('comments.comment')
+                                    </div>
+                                    <div class="pt-3 border-top border-top-dashed mt-4">
+                                        <form action="{{ route('task.add_comment', $task->id) }}" method="post"
+                                            id="form_comment">
+                                            <div class="form-group">
+                                                <textarea name="comment" id="comment" cols="30" rows="2" class="form-control"></textarea>
+                                            </div>
+                                            <div class="pt-3 border-top border-top-dashed mt-4 d-flex justify-content-end">
+                                                <button type="submit" class="btn btn-outline-primary w-sm me-1">Add
+                                                    Comment</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- end card body -->
+                            </div>
                             <!-- end card -->
                         </div>
                         <!-- ene col -->
@@ -570,117 +593,119 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Sub Task</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Leader</th>
-                                <th scope="col">Team</th>
-                                <th scope="col">Deadline</th>
-                                <th scope="col">Progress</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($task->subTasks as $item)
+                    <div class="table-card table-responsive">
+                        <table class="table table-striped">
+                            <thead>
                                 <tr>
-                                    <th scope="row">
-                                        <a href="{{ url('subtask/detail/' . $item->id) }}" class="text-dark">
-                                            {{ \Illuminate\Support\Str::limit($item->name, 45, $end = '...') }}
-                                        </a>
-                                    </th>
-                                    <td>
-                                        <div
-                                            class="badge badge-soft-{{ \App\Helper\Helper::getStatusColor($item->status) }} fs-12">
-                                            {{ config('constants.project_status')[$item->status] }}</div>
-                                    </td>
-                                    <td>
-                                        <div class="avatar-group">
-                                            <a href="javascript: void(0);" class="avatar-group-item"
-                                                data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
-                                                title="{{ $item->leader->name }}">
-                                                {!! \App\Helper\Helper::avatar(
-                                                    $item->leader->avatar,
-                                                    $item->leader->name,
-                                                    'avatar-xxs',
-                                                    11,
-                                                    auth() && auth()->user()->id === $item->leader->id,
-                                                ) !!}
+                                    <th scope="col">Sub Task</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Leader</th>
+                                    <th scope="col">Team</th>
+                                    <th scope="col">Deadline</th>
+                                    <th scope="col">Progress</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($task->subTasks as $item)
+                                    <tr>
+                                        <th scope="row">
+                                            <a href="{{ url('subtask/detail/' . $item->id) }}" class="text-dark">
+                                                {{ \Illuminate\Support\Str::limit($item->name, 45, $end = '...') }}
                                             </a>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="avatar-group">
-                                            @foreach ($item->assignUsers as $member)
+                                        </th>
+                                        <td>
+                                            <div
+                                                class="badge badge-soft-{{ \App\Helper\Helper::getStatusColor($item->status) }} fs-12">
+                                                {{ config('constants.project_status')[$item->status] }}</div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-group">
                                                 <a href="javascript: void(0);" class="avatar-group-item"
-                                                    data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                                    data-bs-placement="top" title="{{ $member->name }}">
+                                                    data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
+                                                    title="{{ $item->leader->name }}">
                                                     {!! \App\Helper\Helper::avatar(
-                                                        $member->avatar,
-                                                        $member->name,
+                                                        $item->leader->avatar,
+                                                        $item->leader->name,
                                                         'avatar-xxs',
                                                         11,
-                                                        auth() && auth()->user()->id === $member->id,
+                                                        auth() && auth()->user()->id === $item->leader->id,
                                                     ) !!}
                                                 </a>
-                                            @endforeach
-                                        </div>
-                                    </td>
-                                    <td>{{ $item->end_date ? date('D j M, Y', strtotime($item->end_date)) : 'Continue' }}
-                                    </td>
-                                    <td>
-                                        @if (\App\Helper\Helper::progress($item) >= 0)
-                                            <div>
-                                                <div class="d-flex mb-2">
-                                                    {{-- <div class="flex-grow-1">
-                                                        <div>Progress</div>
-                                                    </div> --}}
-                                                    <div class="flex-shrink-0">
-                                                        <div>{{ \App\Helper\Helper::progress($item) }}%</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-group">
+                                                @foreach ($item->assignUsers as $member)
+                                                    <a href="javascript: void(0);" class="avatar-group-item"
+                                                        data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                        data-bs-placement="top" title="{{ $member->name }}">
+                                                        {!! \App\Helper\Helper::avatar(
+                                                            $member->avatar,
+                                                            $member->name,
+                                                            'avatar-xxs',
+                                                            11,
+                                                            auth() && auth()->user()->id === $member->id,
+                                                        ) !!}
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        </td>
+                                        <td>{{ $item->end_date ? date('D j M, Y', strtotime($item->end_date)) : 'Continue' }}
+                                        </td>
+                                        <td>
+                                            @if (\App\Helper\Helper::progress($item) >= 0)
+                                                <div>
+                                                    <div class="d-flex mb-2">
+                                                        {{-- <div class="flex-grow-1">
+                                                            <div>Progress</div>
+                                                        </div> --}}
+                                                        <div class="flex-shrink-0">
+                                                            <div>{{ \App\Helper\Helper::progress($item) }}%</div>
+                                                        </div>
                                                     </div>
+    
+                                                    <div class="progress progress-sm animated-progress">
+                                                        <div class="progress-bar bg-success" role="progressbar"
+                                                            aria-valuenow="{{ \App\Helper\Helper::progress($item) }}"
+                                                            aria-valuemin="0" aria-valuemax="100"
+                                                            style="width: {{ \App\Helper\Helper::progress($item) }}%;">
+                                                        </div><!-- /.progress-bar -->
+                                                    </div><!-- /.progress -->
                                                 </div>
-
-                                                <div class="progress progress-sm animated-progress">
-                                                    <div class="progress-bar bg-success" role="progressbar"
-                                                        aria-valuenow="{{ \App\Helper\Helper::progress($item) }}"
-                                                        aria-valuemin="0" aria-valuemax="100"
-                                                        style="width: {{ \App\Helper\Helper::progress($item) }}%;">
-                                                    </div><!-- /.progress-bar -->
-                                                </div><!-- /.progress -->
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button
+                                                    class="btn btn-link text-muted p-1 mt-n1 py-0 text-decoration-none fs-15"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    <i data-feather="more-horizontal" class="icon-sm"></i>
+                                                </button>
+    
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item" href="{{ url('subtask/detail/' . $item->id) }}"><i
+                                                            class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                        View</a>
+                                                    @if (\App\Helper\Helper::clinicSubTaskEditable(auth()->user(), $item))
+                                                        <a class="dropdown-item"
+                                                            href="{{ url('subtask/edit/' . $item->id) }}"><i
+                                                                class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                            Edit</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item"
+                                                            href="javascript:open_modal_delete_bigproject({{ $item->id }})"><i
+                                                                class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                            Remove</a>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button
-                                                class="btn btn-link text-muted p-1 mt-n1 py-0 text-decoration-none fs-15"
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                <i data-feather="more-horizontal" class="icon-sm"></i>
-                                            </button>
-
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="{{ url('subtask/detail/' . $item->id) }}"><i
-                                                        class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                    View</a>
-                                                @if (\App\Helper\Helper::clinicSubTaskEditable(auth()->user(), $item))
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('subtask/edit/' . $item->id) }}"><i
-                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                        Edit</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item"
-                                                        href="javascript:open_modal_delete_bigproject({{ $item->id }})"><i
-                                                            class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                        Remove</a>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

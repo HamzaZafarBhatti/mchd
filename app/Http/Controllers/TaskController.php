@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskAssignee;
@@ -114,9 +115,24 @@ class TaskController extends Controller
     public function task_detail($task_id)
     {
         $task = Task::findOrFail($task_id);
+        $comments = $task->comments;
         $members = $task->project->assignUsers;
         $leaders = User::members(auth()->user()->department_code);
-        return view('task.detail', compact('task', 'members', 'leaders'));
+        return view('task.detail', compact('task', 'members', 'leaders', 'comments'));
+    }
+
+    public function add_comment(Request $request, $id)
+    {
+        $project = Task::find($id);
+
+        $comment = new Comment();
+        $comment->body = $request->comment;
+        $comment->user_id = auth()->user()->id;
+
+        $project->comments()->save($comment);
+        $comments = $project->comments;
+
+        return view('comments.comment', compact('comments'))->render();
     }
 
 

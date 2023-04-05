@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\SubAttachment;
 use App\Models\SubTask;
 use App\Models\SubTaskAssignees;
@@ -86,8 +87,23 @@ class SubTaskController extends Controller
 
     public function sub_task_detail($sub_task_id){
         $sub_task = SubTask::findOrFail($sub_task_id);
+        $comments = $sub_task->comments;
         $members = $sub_task->task->assignUsers;
-        return view('subtask.detail', compact('sub_task', 'members'));
+        return view('subtask.detail', compact('sub_task', 'members', 'comments'));
+    }
+
+    public function add_comment(Request $request, $id)
+    {
+        $project = SubTask::find($id);
+
+        $comment = new Comment();
+        $comment->body = $request->comment;
+        $comment->user_id = auth()->user()->id;
+
+        $project->comments()->save($comment);
+        $comments = $project->comments;
+
+        return view('comments.comment', compact('comments'))->render();
     }
 
 

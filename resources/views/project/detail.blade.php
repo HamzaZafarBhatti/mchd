@@ -166,6 +166,29 @@
                                 </div>
                                 <!-- end card body -->
                             </div>
+                            <div class="card border">
+                                <div class="card-header border-bottom-dashed align-items-center d-flex">
+                                    <h6 class="mb-0 fw-semibold text-uppercase flex-grow-1">Comments</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="comments">
+                                        @include('comments.comment')
+                                    </div>
+                                    <div class="pt-3 border-top border-top-dashed mt-4">
+                                        <form action="{{ route('project.add_comment', $project->id) }}" method="post"
+                                            id="form_comment">
+                                            <div class="form-group">
+                                                <textarea name="comment" id="comment" cols="30" rows="2" class="form-control"></textarea>
+                                            </div>
+                                            <div class="pt-3 border-top border-top-dashed mt-4 d-flex justify-content-end">
+                                                <button type="submit" class="btn btn-outline-primary w-sm me-1">Add
+                                                    Comment</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- end card body -->
+                            </div>
                             <!-- end card -->
                         </div>
                         <!-- ene col -->
@@ -579,47 +602,48 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Task</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Leader</th>
-                                <th scope="col">Team</th>
-                                <th scope="col">Sub Tasks</th>
-                                <th scope="col">Progress</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($project->tasks as $item)
+                    <div class="table-card table-responsive">
+                        <table class="table table-striped">
+                            <thead>
                                 <tr>
-                                    <th scope="row">
-                                        <a href="{{ url('task/detail/' . $item->id) }}" class="text-dark">
-                                            {{ \Illuminate\Support\Str::limit($item->name, 45, $end = '...') }}
-                                        </a>
-                                    </th>
-                                    <td>
-                                        <div
-                                            class="badge badge-soft-{{ \App\Helper\Helper::getStatusColor($item->status) }} fs-12">
-                                            {{ config('constants.project_status')[$item->status] }}</div>
-                                    </td>
-                                    <td>
-                                        <div class="avatar-group">
-                                            @foreach ($item->assignLeaders as $member)
-                                                <a href="javascript: void(0);" class="avatar-group-item"
-                                                    data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                                    data-bs-placement="top" title="{{ $member->name }}">
-                                                    {!! \App\Helper\Helper::avatar(
-                                                        $member->avatar,
-                                                        $member->name,
-                                                        'avatar-xxs',
-                                                        11,
-                                                        auth() && auth()->user()->id === $member->id,
-                                                    ) !!}
-                                                </a>
-                                            @endforeach
-                                            {{-- <a href="javascript: void(0);" class="avatar-group-item"
+                                    <th scope="col">Task</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Leader</th>
+                                    <th scope="col">Team</th>
+                                    <th scope="col">Sub Tasks</th>
+                                    <th scope="col">Progress</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($project->tasks as $item)
+                                    <tr>
+                                        <th scope="row">
+                                            <a href="{{ url('task/detail/' . $item->id) }}" class="text-dark">
+                                                {{ \Illuminate\Support\Str::limit($item->name, 45, $end = '...') }}
+                                            </a>
+                                        </th>
+                                        <td>
+                                            <div
+                                                class="badge badge-soft-{{ \App\Helper\Helper::getStatusColor($item->status) }} fs-12">
+                                                {{ config('constants.project_status')[$item->status] }}</div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-group">
+                                                @foreach ($item->assignLeaders as $member)
+                                                    <a href="javascript: void(0);" class="avatar-group-item"
+                                                        data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                        data-bs-placement="top" title="{{ $member->name }}">
+                                                        {!! \App\Helper\Helper::avatar(
+                                                            $member->avatar,
+                                                            $member->name,
+                                                            'avatar-xxs',
+                                                            11,
+                                                            auth() && auth()->user()->id === $member->id,
+                                                        ) !!}
+                                                    </a>
+                                                @endforeach
+                                                {{-- <a href="javascript: void(0);" class="avatar-group-item"
                                                 data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
                                                 title="{{ $item->leader->name }}">
                                                 {!! \App\Helper\Helper::avatar(
@@ -630,81 +654,84 @@
                                                     auth() && auth()->user()->id === $item->leader->id,
                                                 ) !!}
                                             </a> --}}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="avatar-group">
-                                            @foreach ($item->assignUsers as $member)
-                                                <a href="javascript: void(0);" class="avatar-group-item"
-                                                    data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                                    data-bs-placement="top" title="{{ $member->name }}">
-                                                    {!! \App\Helper\Helper::avatar(
-                                                        $member->avatar,
-                                                        $member->name,
-                                                        'avatar-xxs',
-                                                        11,
-                                                        auth() && auth()->user()->id === $member->id,
-                                                    ) !!}
-                                                </a>
-                                            @endforeach
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-soft-secondary"> {{ $item->subTasks->count() }}</span>
-                                    </td>
-                                    <td>
-                                        @if (\App\Helper\Helper::progress($item) >= 0)
-                                            <div>
-                                                <div class="d-flex mb-2">
-                                                    {{-- <div class="flex-grow-1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-group">
+                                                @foreach ($item->assignUsers as $member)
+                                                    <a href="javascript: void(0);" class="avatar-group-item"
+                                                        data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                        data-bs-placement="top" title="{{ $member->name }}">
+                                                        {!! \App\Helper\Helper::avatar(
+                                                            $member->avatar,
+                                                            $member->name,
+                                                            'avatar-xxs',
+                                                            11,
+                                                            auth() && auth()->user()->id === $member->id,
+                                                        ) !!}
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-soft-secondary">
+                                                {{ $item->subTasks->count() }}</span>
+                                        </td>
+                                        <td>
+                                            @if (\App\Helper\Helper::progress($item) >= 0)
+                                                <div>
+                                                    <div class="d-flex mb-2">
+                                                        {{-- <div class="flex-grow-1">
                                                     <div>Progress</div>
                                                 </div> --}}
-                                                    <div class="flex-shrink-0">
-                                                        <div>{{ \App\Helper\Helper::progress($item) }}%</div>
+                                                        <div class="flex-shrink-0">
+                                                            <div>{{ \App\Helper\Helper::progress($item) }}%</div>
+                                                        </div>
                                                     </div>
+                                                    <div class="progress progress-sm animated-progress">
+                                                        <div class="progress-bar bg-success" role="progressbar"
+                                                            aria-valuenow="{{ \App\Helper\Helper::progress($item) }}"
+                                                            aria-valuemin="0" aria-valuemax="100"
+                                                            style="width: {{ \App\Helper\Helper::progress($item) }}%;">
+                                                        </div><!-- /.progress-bar -->
+                                                    </div><!-- /.progress -->
                                                 </div>
-                                                <div class="progress progress-sm animated-progress">
-                                                    <div class="progress-bar bg-success" role="progressbar"
-                                                        aria-valuenow="{{ \App\Helper\Helper::progress($item) }}"
-                                                        aria-valuemin="0" aria-valuemax="100"
-                                                        style="width: {{ \App\Helper\Helper::progress($item) }}%;">
-                                                    </div><!-- /.progress-bar -->
-                                                </div><!-- /.progress -->
-                                            </div>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button
-                                                class="btn btn-link text-muted p-1 mt-n1 py-0 text-decoration-none fs-15"
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                <i data-feather="more-horizontal" class="icon-sm"></i>
-                                            </button>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button
+                                                    class="btn btn-link text-muted p-1 mt-n1 py-0 text-decoration-none fs-15"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    <i data-feather="more-horizontal" class="icon-sm"></i>
+                                                </button>
 
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="{{ url('task/detail/' . $item->id) }}"><i
-                                                        class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                    View</a>
-
-                                                @if (\App\Helper\Helper::clinicTaskEditable(auth()->user(), $item))
+                                                <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item"
-                                                        href="{{ url('task/edit/' . $item->id) }}"><i
-                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                        Edit</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#removeProjectModal"
-                                                        onclick="open_modal_delete_bigproject({{ $item->id }})"><i
-                                                            class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                        Remove</button>
-                                                @endif
+                                                        href="{{ url('task/detail/' . $item->id) }}"><i
+                                                            class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                        View</a>
+
+                                                    @if (\App\Helper\Helper::clinicTaskEditable(auth()->user(), $item))
+                                                        <a class="dropdown-item"
+                                                            href="{{ url('task/edit/' . $item->id) }}"><i
+                                                                class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                            Edit</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <button class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#removeProjectModal"
+                                                            onclick="open_modal_delete_bigproject({{ $item->id }})"><i
+                                                                class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                            Remove</button>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -957,10 +984,9 @@
 @section('script-bottom')
     <script>
         let candidate_user_list = @json($members);
-        let user_list = @json($project->assignUsers); 
+        let user_list = @json($project->assignUsers);
         let candidate_leader_list = @json($members);
-        let leader_list = @json($project->assignLeaders); 
-        { // invite leader
+        let leader_list = @json($project->assignLeaders); { // invite leader
             function add_user(obj, i) {
                 var user = candidate_user_list[i];
                 console.log(user);
@@ -972,6 +998,7 @@
                     $(obj).text("Add");
                 }
             }
+
             function add_leader(obj, i) {
                 var user = candidate_leader_list[i];
                 if (!push_leader(user)) {
@@ -999,6 +1026,7 @@
                 }
                 return status;
             }
+
             function push_leader(user) {
                 var status = false;
                 for (var i = 0; i < leader_list.length; i++) {
@@ -1025,6 +1053,7 @@
                 for (var i = 0; i < user_list.length; i++)
                     $('.members_on_modal').append(avatar(user_list[i]));
             }
+
             function add_leader_at_top_modal(user) {
                 $('.leaders_on_modal').append(avatar(user));
             }
@@ -1038,34 +1067,44 @@
 
             function html_candidate_item(candidate, text, i) {
                 var html = '<div class="d-flex align-items-center member_item">\
-                            <div class="avatar-xs flex-shrink-0 me-3">\
-                                ' + avatar(candidate) + '\
-                            </div>\
-                            <div class="flex-grow-1">\
-                                <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' + candidate.name + '</a>\
-                                </h5>\
-                            </div>\
-                            <div class="flex-shrink-0">\
-                                <button type="button" class="btn btn-light btn-sm" onclick="add_user(this, ' + i + ')">' +
+                                        <div class="avatar-xs flex-shrink-0 me-3">\
+                                            ' + avatar(candidate) + '\
+                                        </div>\
+                                        <div class="flex-grow-1">\
+                                            <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' +
+                    candidate
+                    .name + '</a>\
+                                            </h5>\
+                                        </div>\
+                                        <div class="flex-shrink-0">\
+                                            <button type="button" class="btn btn-light btn-sm" onclick="add_user(this, ' +
+                    i +
+                    ')">' +
                     text + '</button>\
-                            </div>\
-                        </div>';
+                                        </div>\
+                                    </div>';
                 return html;
             }
+
             function html_leader_item(candidate, text, i) {
                 var html = '<div class="d-flex align-items-center member_item">\
-                            <div class="avatar-xs flex-shrink-0 me-3">\
-                                ' + avatar(candidate) + '\
-                            </div>\
-                            <div class="flex-grow-1">\
-                                <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' + candidate.name + '</a>\
-                                </h5>\
-                            </div>\
-                            <div class="flex-shrink-0">\
-                                <button type="button" class="btn btn-light btn-sm" onclick="add_leader(this, ' + i + ')">' +
+                                        <div class="avatar-xs flex-shrink-0 me-3">\
+                                            ' + avatar(candidate) + '\
+                                        </div>\
+                                        <div class="flex-grow-1">\
+                                            <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' +
+                    candidate
+                    .name +
+                    '</a>\
+                                            </h5>\
+                                        </div>\
+                                        <div class="flex-shrink-0">\
+                                            <button type="button" class="btn btn-light btn-sm" onclick="add_leader(this, ' +
+                    i +
+                    ')">' +
                     text + '</button>\
-                            </div>\
-                        </div>';
+                                        </div>\
+                                    </div>';
                 return html;
             }
 
@@ -1092,6 +1131,7 @@
                         $('#members_container').append(html_candidate_item(item, "Add", i));
                 });
             }
+
             function update_modal_leader(leader_list) {
 
                 console.log(leader_list)
@@ -1125,25 +1165,25 @@
                     user.name.split(" ")[user.name.split(" ").length - 1][0];
 
                 let leader = '<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"\
-                                    data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
-                                        <div class="' + size + '">\
-                                            <img src="{{ URL::asset('public/images/') }}/' + user.avatar + '" alt="" class="rounded-circle img-fluid">\
-                                        </div>\
-                                  </a>';
+                                                data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
+                                                    <div class="' + size + '">\
+                                                        <img src="{{ URL::asset('public/images/') }}/' + user.avatar + '" alt="" class="rounded-circle img-fluid">\
+                                                    </div>\
+                                              </a>';
 
                 if (user.avatar === 'user_default.jpg')
                     leader =
                     '<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"\
-                                    data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
-                                        <div class="avatar-xs">\
-                                            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' +
+                                                data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
+                                                    <div class="avatar-xs">\
+                                                        <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' +
                     user.name + '" class="' + size +
                     ' me-0 d-inline-block">\
-                                            <div class="avatar-title rounded-circle bg-secondary text-white text-uppercase">' +
+                                                        <div class="avatar-title rounded-circle bg-secondary text-white text-uppercase">' +
                     clientNameBothLetters + '</div>\
-                                        </div>\
-                                        </div>\
-                                  </a>';
+                                                    </div>\
+                                                    </div>\
+                                              </a>';
                 return leader;
             }
 
@@ -1174,6 +1214,7 @@
                 });
                 $("#form").submit();
             }
+
             function invite_leader() {
                 if (leader_list.length === 0) {
                     notification("Please select leader.");

@@ -4,22 +4,22 @@
 <script src="{{ URL::asset('assets/libs/node-waves/node-waves.min.js') }}"></script>
 <script src="{{ URL::asset('assets/libs/feather-icons/feather-icons.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/pages/plugins/lord-icon-2.1.0.min.js') }}"></script>
-<script type='text/javascript' src='{{URL::asset('assets/libs/toastify-js/toastify-js.min.js')}}'></script>
-<script type='text/javascript' src='{{URL::asset('assets/libs/choices.js/choices.js.min.js')}}'></script>
-<script type='text/javascript' src='{{URL::asset('assets/libs/flatpickr/flatpickr.min.js')}}'></script>
-<script type='text/javascript' src='{{URL::asset('assets/js/utils.js')}}'></script>
+<script type='text/javascript' src='{{ URL::asset('assets/libs/toastify-js/toastify-js.min.js') }}'></script>
+<script type='text/javascript' src='{{ URL::asset('assets/libs/choices.js/choices.js.min.js') }}'></script>
+<script type='text/javascript' src='{{ URL::asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
+<script type='text/javascript' src='{{ URL::asset('assets/js/utils.js') }}'></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.0/firebase-messaging.js"></script>
 
 <script>
-    function notification(msg){
+    function notification(msg) {
         var element = document.getElementById("myToast");
         var myToast = new bootstrap.Toast(element);
         document.querySelector(".toast-body").innerHTML = msg;
         myToast.show();
     }
 
-    function notification_success(msg){
+    function notification_success(msg) {
         var element = document.getElementById("toast_success");
         var myToast = new bootstrap.Toast(element);
         document.querySelector("#toast_success .toast-body").innerHTML = msg;
@@ -63,29 +63,29 @@
     const messaging = firebase.messaging();
 
     function initFirebaseMessagingRegistration() {
-        messaging.requestPermission().then(function () {
+        messaging.requestPermission().then(function() {
             return messaging.getToken()
         }).then(function(token) {
 
             $.ajax({
-                url: "{{route('fcmToken')}}",
+                url: "{{ route('fcmToken') }}",
                 method: 'patch',
-                data:{
+                data: {
                     token: token,
-                    _token: '{{csrf_token()}}'
+                    _token: '{{ csrf_token() }}'
                 },
-                success: function (response) {
+                success: function(response) {
 
                 },
-                error: function (response) {
+                error: function(response) {
 
                 }
-            }).done(function () {
-                setTimeout(function(){
+            }).done(function() {
+                setTimeout(function() {
                     $("#overlay").fadeOut(200);
-                },500);
+                }, 500);
             });
-        }).catch(function (err) {
+        }).catch(function(err) {
             console.log(`Token Error :: ${err}`);
         });
     }
@@ -104,6 +104,27 @@
     });
 
 
+    $('#form_comment').on('submit', function(e) {
+        e.preventDefault();
+        var _this = this;
+        var comment = $('#comment').val();
+        $.ajax({
+            url: _this.action,
+            data: {
+                _token: '{{ csrf_token() }}',
+                comment: comment
+            },
+            method: _this.method,
+            success: function(response) {
+                _this.reset();
+                $('.comments').empty().html(response)
+            }
+        }).done(function() {
+            setTimeout(function() {
+                $("#overlay").fadeOut(200);
+            }, 500);
+        });
+    })
 </script>
 @yield('script')
 @yield('script-bottom')

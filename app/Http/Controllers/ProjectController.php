@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helper\Helper;
 use App\Models\BigProject;
+use App\Models\Comment;
 use App\Models\ProAttachment;
 use App\Models\Project;
 use App\Models\ProjectAssignee;
@@ -104,8 +105,23 @@ class ProjectController extends Controller
 
     public function project_detail($big_project_id){
         $project = Project::findOrFail($big_project_id);
+        $comments = $project->comments;
         $members = User::members(auth()->user()->department_code);
-        return view('project.detail', compact('project', 'members'));
+        return view('project.detail', compact('project', 'members', 'comments'));
+    }
+
+    public function add_comment(Request $request, $id)
+    {
+        $project = Project::find($id);
+
+        $comment = new Comment();
+        $comment->body = $request->comment;
+        $comment->user_id = auth()->user()->id;
+
+        $project->comments()->save($comment);
+        $comments = $project->comments;
+
+        return view('comments.comment', compact('comments'))->render();
     }
 
     public function project_edit($project_id){

@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function (){
         Route::post('/bigproject/chart/', [BigProjectController::class, 'bigproject_chart'])->name('bigproject_chart');
         Route::post('/bigproject/m_edit', [BigProjectController::class, 'm_edit'])->name('m_edit'); // m_ : means modal
         Route::post('/clinic/change_status', [BigProjectController::class, 'change_status']);
+        Route::post('/bigproject/add_comment/{id}', [BigProjectController::class, 'add_comment'])->name('bigproject.add_comment');
 
         // Projects
         Route::get('/projectlist', [ProjectController::class, 'projectlist'])->name('projectlist');
@@ -90,6 +91,7 @@ Route::middleware('auth')->group(function (){
         Route::post('/project/delete_project', [ProjectController::class, 'delete_project_v2'])->name('delete_project_v2');
         Route::post('/project/upload_file/{project_id}', [ProjectController::class, 'project_upload_file'])->name('project_upload_file');
         Route::post('/project/delete_attachment/{project_id}', [ProjectController::class, 'project_delete_attachment']);
+        Route::post('/project/add_comment/{id}', [ProjectController::class, 'add_comment'])->name('project.add_comment');
 
 
         // Tasks
@@ -107,6 +109,7 @@ Route::middleware('auth')->group(function (){
         Route::post('/task/delete_project', [TaskController::class, 'task_delete_project'])->name('task_delete_project');
         Route::post('/task/upload_file/{task_id}', [TaskController::class, 'task_upload_file'])->name('task_upload_file');
         Route::post('/task/delete_attachment/{task_id}', [TaskController::class, 'task_delete_attachment'])->name('task_delete_attachment');
+        Route::post('/task/add_comment/{id}', [TaskController::class, 'add_comment'])->name('task.add_comment');
 
         // Sub Tasks
         Route::get('/sublist', [SubTaskController::class, 'sublist'])->name('sublist');
@@ -121,6 +124,7 @@ Route::middleware('auth')->group(function (){
         Route::post('/subtask/delete_project', [SubTaskController::class, 'sub_task_delete_project'])->name('sub_task_delete_project');
         Route::post('/subtask/upload_file/{task_id}', [SubTaskController::class, 'sub_task_upload_file'])->name('sub_task_upload_file');
         Route::post('/subtask/delete_attachment/{task_id}', [SubTaskController::class, 'sub_task_delete_attachment'])->name('sub_task_delete_attachment');
+        Route::post('/subtask/add_comment/{id}', [SubTaskController::class, 'add_comment'])->name('subtask.add_comment');
 
         
         // Kpi Big Projects

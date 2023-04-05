@@ -138,6 +138,29 @@
                                 </div>
                                 <!-- end card body -->
                             </div>
+                            <div class="card border">
+                                <div class="card-header border-bottom-dashed align-items-center d-flex">
+                                    <h6 class="mb-0 fw-semibold text-uppercase flex-grow-1">Comments</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="comments">
+                                        @include('comments.comment')
+                                    </div>
+                                    <div class="pt-3 border-top border-top-dashed mt-4">
+                                        <form action="{{ route('subtask.add_comment', $sub_task->id) }}" method="post"
+                                            id="form_comment">
+                                            <div class="form-group">
+                                                <textarea name="comment" id="comment" cols="30" rows="2" class="form-control"></textarea>
+                                            </div>
+                                            <div class="pt-3 border-top border-top-dashed mt-4 d-flex justify-content-end">
+                                                <button type="submit" class="btn btn-outline-primary w-sm me-1">Add
+                                                    Comment</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- end card body -->
+                            </div>
                             <!-- end card -->
                         </div>
                         <!-- ene col -->
