@@ -12,6 +12,28 @@
 <script src="https://www.gstatic.com/firebasejs/8.6.0/firebase-messaging.js"></script>
 
 <script>
+    $('#form_comment').on('submit', function(e) {
+        e.preventDefault();
+        var _this = this;
+        var comment = $('#comment').val();
+        $.ajax({
+            url: _this.action,
+            data: {
+                _token: '{{ csrf_token() }}',
+                comment: comment
+            },
+            method: _this.method,
+            success: function(response) {
+                _this.reset();
+                $('.comments').empty().html(response)
+            }
+        }).done(function() {
+            setTimeout(function() {
+                $("#overlay").fadeOut(200);
+            }, 500);
+        });
+    })
+
     function notification(msg) {
         var element = document.getElementById("myToast");
         var myToast = new bootstrap.Toast(element);
@@ -102,36 +124,6 @@
         };
         new Notification(noteTitle, noteOptions);
     });
-
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-    $(document).on('submit', '#form_comment', function(e) {
-        alert('here')
-        e.preventDefault();
-        var _this = this;
-        var comment = $('#comment').val();
-        alert('comment')
-        $.ajax({
-            url: _this.action,
-            data: {
-                comment: comment
-            },
-            method: _this.method,
-            success: function(response) {
-                alert(response)
-                _this.reset();
-                $('.comments').empty().html(response)
-            }
-        }).done(function() {
-            setTimeout(function() {
-                $("#overlay").fadeOut(200);
-            }, 500);
-        });
-    })
 </script>
 @yield('script')
 @yield('script-bottom')

@@ -176,7 +176,7 @@
                                     </div>
                                     <div class="pt-3 border-top border-top-dashed mt-4">
                                         <form action="{{ route('kpiproject.add_comment', $project->id) }}" method="post"
-                                            id="form_comment" onsubmit="event.preventDefault()">
+                                            id="form_comment">
                                             <div class="form-group">
                                                 <textarea name="comment" id="comment" cols="30" rows="2" class="form-control"></textarea>
                                             </div>
@@ -510,8 +510,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <span class="badge badge-soft-secondary">
-                                                {{ $item->subTasks->count() }}</span>
+                                            <span class="badge badge-soft-secondary"> {{ $item->subTasks->count() }}</span>
                                         </td>
                                         <td>
                                             @if (\App\Helper\Helper::progress($item) >= 0)
@@ -524,7 +523,7 @@
                                                             <div>{{ \App\Helper\Helper::progress($item) }}%</div>
                                                         </div>
                                                     </div>
-
+    
                                                     <div class="progress progress-sm animated-progress">
                                                         <div class="progress-bar bg-success" role="progressbar"
                                                             aria-valuenow="{{ \App\Helper\Helper::progress($item) }}"
@@ -542,13 +541,13 @@
                                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                     <i data-feather="more-horizontal" class="icon-sm"></i>
                                                 </button>
-
+    
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item"
                                                         href="{{ url('kpitask/detail/' . $item->id) }}"><i
                                                             class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                         View</a>
-
+    
                                                     @if (\App\Helper\Helper::clinicTaskEditable(auth()->user(), $item))
                                                         <a class="dropdown-item"
                                                             href="{{ url('kpitask/edit/' . $item->id) }}"><i
@@ -919,28 +918,6 @@
 
             function html_candidate_item(candidate, text, i) {
                 var html = '<div class="d-flex align-items-center member_item">\
-                                                <div class="avatar-xs flex-shrink-0 me-3">\
-                                                    ' + avatar(candidate) + '\
-                                                </div>\
-                                                <div class="flex-grow-1">\
-                                                    <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' +
-                    candidate
-                    .name +
-                    '</a>\
-                                                    </h5>\
-                                                </div>\
-                                                <div class="flex-shrink-0">\
-                                                    <button type="button" class="btn btn-light btn-sm" onclick="add_user(this, ' +
-                    i +
-                    ')">' +
-                    text + '</button>\
-                                                </div>\
-                                            </div>';
-                return html;
-            }
-
-            function html_leader_item(candidate, text, i) {
-                var html = '<div class="d-flex align-items-center member_item">\
                                             <div class="avatar-xs flex-shrink-0 me-3">\
                                                 ' + avatar(candidate) + '\
                                             </div>\
@@ -952,12 +929,34 @@
                                                 </h5>\
                                             </div>\
                                             <div class="flex-shrink-0">\
-                                                <button type="button" class="btn btn-light btn-sm" onclick="add_leader(this, ' +
+                                                <button type="button" class="btn btn-light btn-sm" onclick="add_user(this, ' +
                     i +
                     ')">' +
                     text + '</button>\
                                             </div>\
                                         </div>';
+                return html;
+            }
+
+            function html_leader_item(candidate, text, i) {
+                var html = '<div class="d-flex align-items-center member_item">\
+                                        <div class="avatar-xs flex-shrink-0 me-3">\
+                                            ' + avatar(candidate) + '\
+                                        </div>\
+                                        <div class="flex-grow-1">\
+                                            <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' +
+                    candidate
+                    .name +
+                    '</a>\
+                                            </h5>\
+                                        </div>\
+                                        <div class="flex-shrink-0">\
+                                            <button type="button" class="btn btn-light btn-sm" onclick="add_leader(this, ' +
+                    i +
+                    ')">' +
+                    text + '</button>\
+                                        </div>\
+                                    </div>';
                 return html;
             }
 
@@ -1018,26 +1017,25 @@
                     user.name.split(" ")[user.name.split(" ").length - 1][0];
 
                 let leader = '<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"\
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
-                                                            <div class="' + size + '">\
-                                                                <img src="{{ URL::asset('public/images/') }}/' + user
-                    .avatar + '" alt="" class="rounded-circle img-fluid">\
-                                                            </div>\
-                                                      </a>';
+                                                    data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
+                                                        <div class="' + size + '">\
+                                                            <img src="{{ URL::asset('public/images/') }}/' + user.avatar + '" alt="" class="rounded-circle img-fluid">\
+                                                        </div>\
+                                                  </a>';
 
                 if (user.avatar === 'user_default.jpg')
                     leader =
                     '<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"\
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
-                                                            <div class="avatar-xs">\
-                                                                <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' +
+                                                    data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
+                                                        <div class="avatar-xs">\
+                                                            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' +
                     user.name + '" class="' + size +
                     ' me-0 d-inline-block">\
-                                                                <div class="avatar-title rounded-circle bg-secondary text-white text-uppercase">' +
+                                                            <div class="avatar-title rounded-circle bg-secondary text-white text-uppercase">' +
                     clientNameBothLetters + '</div>\
-                                                            </div>\
-                                                            </div>\
-                                                      </a>';
+                                                        </div>\
+                                                        </div>\
+                                                  </a>';
                 return leader;
             }
 
