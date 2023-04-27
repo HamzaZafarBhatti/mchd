@@ -110,9 +110,11 @@
     });
 
     $('#form_comment').on('submit', function(e) {
+        alert('here')
         e.preventDefault();
         var _this = this;
         var comment = $('#comment').val();
+        alert('comment')
         $.ajax({
             url: _this.action,
             data: {
@@ -120,6 +122,7 @@
             },
             method: _this.method,
             success: function(response) {
+                alert(response)
                 _this.reset();
                 $('.comments').empty().html(response)
             }
