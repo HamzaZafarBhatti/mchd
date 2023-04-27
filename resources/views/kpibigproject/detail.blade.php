@@ -189,7 +189,7 @@
                                     </div>
                                     <div class="pt-3 border-top border-top-dashed mt-4">
                                         <form action="{{ route('kpibigproject.add_comment', $big_project->id) }}"
-                                            method="post" id="form_comment">
+                                            method="post" id="form_comment" onsubmit="event.preventDefault()">
                                             <div class="form-group">
                                                 <textarea name="comment" id="comment" cols="30" rows="2" class="form-control"></textarea>
                                             </div>
@@ -1294,47 +1294,47 @@
 
             function html_candidate_item(candidate, text, i) {
                 var html = '<div class="d-flex align-items-center member_item">\
-                                                                    <div class="avatar-xs flex-shrink-0 me-3">\
-                                                                        ' + avatar(candidate) +
-                    '\
-                                                                    </div>\
-                                                                    <div class="flex-grow-1">\
-                                                                        <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' +
-                    candidate
-                    .name +
-                    '</a>\
-                                                                        </h5>\
-                                                                    </div>\
-                                                                    <div class="flex-shrink-0">\
-                                                                        <a type="button" class="btn btn-light btn-sm" onclick="add_user(this, ' +
-                    i +
-                    ')">' +
-                    text + '</a>\
-                                                                    </div>\
-                                                                </div>';
-                return html;
-            }
-
-            function html_manager_item(manager, text, i) {
-                var html = '<div class="d-flex align-items-center member_item">\
                                                                         <div class="avatar-xs flex-shrink-0 me-3">\
-                                                                            ' + avatar(manager) +
+                                                                            ' + avatar(candidate) +
                     '\
                                                                         </div>\
                                                                         <div class="flex-grow-1">\
                                                                             <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' +
-                    manager
+                    candidate
                     .name +
                     '</a>\
                                                                             </h5>\
                                                                         </div>\
                                                                         <div class="flex-shrink-0">\
-                                                                            <a type="button" class="btn btn-light btn-sm" onclick="add_manager(this, ' +
+                                                                            <a type="button" class="btn btn-light btn-sm" onclick="add_user(this, ' +
                     i +
                     ')">' +
                     text + '</a>\
                                                                         </div>\
                                                                     </div>';
+                return html;
+            }
+
+            function html_manager_item(manager, text, i) {
+                var html = '<div class="d-flex align-items-center member_item">\
+                                                                            <div class="avatar-xs flex-shrink-0 me-3">\
+                                                                                ' + avatar(manager) +
+                    '\
+                                                                            </div>\
+                                                                            <div class="flex-grow-1">\
+                                                                                <h5 class="fs-13 mb-0"><a href="#" class="text-body d-block name"> ' +
+                    manager
+                    .name +
+                    '</a>\
+                                                                                </h5>\
+                                                                            </div>\
+                                                                            <div class="flex-shrink-0">\
+                                                                                <a type="button" class="btn btn-light btn-sm" onclick="add_manager(this, ' +
+                    i +
+                    ')">' +
+                    text + '</a>\
+                                                                            </div>\
+                                                                        </div>';
                 return html;
             }
 
@@ -1407,28 +1407,28 @@
                     user.name.split(" ")[user.name.split(" ").length - 1][0];
 
                 let leader = '<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"\
-                                                                                data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
-                                                                                    <div class="' + size +
+                                                                                    data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
+                                                                                        <div class="' + size +
                     '">\
-                                                                                        <img src="{{ URL::asset('public/images/') }}/' +
+                                                                                            <img src="{{ URL::asset('public/images/') }}/' +
                     user
                     .avatar + '" alt="" class="rounded-circle img-fluid">\
-                                                                                    </div>\
-                                                                              </a>';
+                                                                                        </div>\
+                                                                                  </a>';
 
                 if (user.avatar === 'user_default.jpg')
                     leader =
                     '<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip"\
-                                                                                data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
-                                                                                    <div class="avatar-xs">\
-                                                                                        <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' +
+                                                                                    data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">\
+                                                                                        <div class="avatar-xs">\
+                                                                                            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="' +
                     user.name + '" class="' + size +
                     ' me-0 d-inline-block">\
-                                                                                        <div class="avatar-title rounded-circle bg-secondary text-white text-uppercase">' +
+                                                                                            <div class="avatar-title rounded-circle bg-secondary text-white text-uppercase">' +
                     clientNameBothLetters + '</div>\
-                                                                                    </div>\
-                                                                                    </div>\
-                                                                              </a>';
+                                                                                        </div>\
+                                                                                        </div>\
+                                                                                  </a>';
                 return leader;
             }
 
