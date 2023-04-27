@@ -189,7 +189,7 @@
                                     </div>
                                     <div class="pt-3 border-top border-top-dashed mt-4">
                                         <form action="{{ route('kpibigproject.add_comment', $big_project->id) }}"
-                                            method="post" id="form_comment" onsubmit="event.preventDefault()">
+                                            method="post" id="form_comment">
                                             <div class="form-group">
                                                 <textarea name="comment" id="comment" cols="30" rows="2" class="form-control"></textarea>
                                             </div>
