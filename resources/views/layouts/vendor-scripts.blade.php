@@ -109,7 +109,7 @@
         }
     });
 
-    $('#form_comment').on('submit', function(e) {
+    $(document).on('submit', '#form_comment', function(e) {
         alert('here')
         e.preventDefault();
         var _this = this;
