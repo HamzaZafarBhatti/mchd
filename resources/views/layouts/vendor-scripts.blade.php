@@ -103,6 +103,11 @@
         new Notification(noteTitle, noteOptions);
     });
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     $('#form_comment').on('submit', function(e) {
         e.preventDefault();
@@ -111,7 +116,6 @@
         $.ajax({
             url: _this.action,
             data: {
-                _token: '{{ csrf_token() }}',
                 comment: comment
             },
             method: _this.method,
