@@ -32,6 +32,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProjectController;
 
 Auth::routes();
+
+
+Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 //Language Translation
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 
