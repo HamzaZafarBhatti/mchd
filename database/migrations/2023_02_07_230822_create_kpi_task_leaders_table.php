@@ -18,8 +18,8 @@ return new class extends Migration
             $table->bigInteger('task_id')->unsigned();
             $table->bigInteger('project_id')->unsigned();
             $table->bigInteger('leader_id')->unsigned();
-            $table->foreign('task_id')->references('id')->on('kpi_tasks')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('leader_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('task_id')->references('id')->on('kpi_tasks')->onDelete('cascade');
+            $table->foreign('leader_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('big_project_id')->unsigned();
             $table->bigInteger('manager_id')->unsigned();
-            $table->foreign('big_project_id')->references('id')->on('kpi_big_projects')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('manager_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('big_project_id')->references('id')->on('kpi_big_projects')->onDelete('cascade');
+            $table->foreign('manager_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
