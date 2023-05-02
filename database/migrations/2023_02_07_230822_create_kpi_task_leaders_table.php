@@ -15,11 +15,9 @@ return new class extends Migration
     {
         Schema::create('kpi_task_leaders', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('task_id')->unsigned();
-            $table->bigInteger('project_id')->unsigned();
-            $table->bigInteger('leader_id')->unsigned();
-            $table->foreign('task_id')->references('id')->on('kpi_tasks')->onDelete('cascade');
-            $table->foreign('leader_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('task_id');
+            $table->foreignId('project_id');
+            $table->foreignId('leader_id');
         });
     }
 
